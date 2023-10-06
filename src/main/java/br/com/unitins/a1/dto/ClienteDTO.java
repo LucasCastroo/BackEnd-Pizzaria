@@ -3,9 +3,8 @@ package br.com.unitins.a1.dto;
 import br.com.unitins.a1.model.Endereco;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ClienteDTO {
@@ -21,9 +20,9 @@ public class ClienteDTO {
     @NotBlank(message = "Campo telefone não pode ser nulo!")
     private final String telefone;
     private final LocalDate nascimento;
-    private final ArrayList<Endereco> enderecos;
+    private final List<Endereco> enderecos;
 
-    public ClienteDTO(String nome, String cpf, String email, String senha, String telefone, LocalDate nascimento, ArrayList<Endereco> enderecos) {
+    public ClienteDTO(String nome, String cpf, String email, String senha, String telefone, LocalDate nascimento, List<Endereco> enderecos) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -55,7 +54,7 @@ public class ClienteDTO {
         return nascimento;
     }
 
-    public ArrayList<Endereco> getEnderecos() {
+    public List<Endereco> getEnderecos() {
         return enderecos;
     }
 
