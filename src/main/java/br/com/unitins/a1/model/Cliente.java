@@ -1,8 +1,10 @@
 package br.com.unitins.a1.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +18,7 @@ public class Cliente extends DefaultEntity {
     private String senha;
     private LocalDate nascimento;
     private String telefone;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos;
 
     public String getNome() {
@@ -43,9 +45,6 @@ public class Cliente extends DefaultEntity {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
-    }
 
     public void setSenha(String senha) {
         this.senha = senha;
