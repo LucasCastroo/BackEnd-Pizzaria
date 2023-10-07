@@ -3,7 +3,6 @@ package br.com.unitins.a1.dto;
 import br.com.unitins.a1.model.Endereco;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,6 +10,7 @@ public class ClienteDTO {
     @NotBlank(message = "Campo nome não pode ser nulo!")
     private final String nome;
     @NotBlank(message = "Campo cpf não pode ser nulo!")
+    @Size(min = 11, max = 14, message = "O campo cpf tem que ter no mínimo 11 digitos!")
     private final String cpf;
     @NotBlank(message = "Campo email não pode ser nulo!")
     private final String email;
@@ -18,11 +18,12 @@ public class ClienteDTO {
     @Size(min = 6, message = "Senha deve ter no mínimo 6 caracters!")
     private final String senha;
     @NotBlank(message = "Campo telefone não pode ser nulo!")
+    @Size(min = 11, message = "Campo telefone deve conter no mínimo 11 caracters!")
     private final String telefone;
-    private final LocalDate nascimento;
+    private final String nascimento;
     private final List<Endereco> enderecos;
 
-    public ClienteDTO(String nome, String cpf, String email, String senha, String telefone, LocalDate nascimento, List<Endereco> enderecos) {
+    public ClienteDTO(String nome, String cpf, String email, String senha, String telefone, String nascimento, List<Endereco> enderecos) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -50,7 +51,7 @@ public class ClienteDTO {
         return telefone;
     }
 
-    public LocalDate getNascimento() {
+    public String getNascimento() {
         return nascimento;
     }
 

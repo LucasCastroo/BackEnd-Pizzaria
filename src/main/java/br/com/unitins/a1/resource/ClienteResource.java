@@ -6,8 +6,12 @@ import br.com.unitins.a1.service.ClienteService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+@Path("/clientes")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ClienteResource {
     @Inject
     ClienteService service;
@@ -30,6 +34,11 @@ public class ClienteResource {
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    @GET
+    public Response findAll() {
+        return Response.ok(service.findByAll()).build();
     }
 
     @GET

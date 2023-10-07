@@ -6,12 +6,13 @@ import br.com.unitins.a1.model.Cliente;
 import br.com.unitins.a1.model.Endereco;
 import br.com.unitins.a1.repository.ClienteRepository;
 import br.com.unitins.a1.repository.EnderecoRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
-
+@ApplicationScoped
 public class EnderecoServiceImpl implements EnderecoService{
 
     @Inject

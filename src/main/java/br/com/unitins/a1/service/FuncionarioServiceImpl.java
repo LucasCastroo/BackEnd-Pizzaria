@@ -4,12 +4,13 @@ import br.com.unitins.a1.dto.FuncionarioDTO;
 import br.com.unitins.a1.dto.FuncionarioResponseDTO;
 import br.com.unitins.a1.model.Funcionario;
 import br.com.unitins.a1.repository.FuncionarioRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
-
+@ApplicationScoped
 public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Inject

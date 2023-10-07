@@ -4,12 +4,14 @@ import br.com.unitins.a1.dto.ClienteDTO;
 import br.com.unitins.a1.dto.ClienteResponseDTO;
 import br.com.unitins.a1.model.Cliente;
 import br.com.unitins.a1.repository.ClienteRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
 
+@ApplicationScoped
 public class ClienteServiceImpl implements ClienteService{
 
     @Inject
@@ -67,5 +69,11 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     public List<ClienteResponseDTO> findByNome(String nome) {
         return repository.findByNome(nome).stream().map(n -> ClienteResponseDTO.valueOf(n)).toList();
+    }
+
+    @Override
+    public List<ClienteResponseDTO> findByAll() {
+        return repository.listAll().stream()
+                .map(c -> ClienteResponseDTO.valueOf(c)).toList();
     }
 }

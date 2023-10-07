@@ -11,4 +11,5 @@ public interface ClienteService {
     public void delete(Long id);
     public ClienteResponseDTO findById(Long id);
     public List<ClienteResponseDTO> findByNome(String nome);
+    public List<ClienteResponseDTO> findByAll();
 }
