@@ -16,14 +16,14 @@ import java.util.List;
 public class EnderecoServiceImpl implements EnderecoService{
 
     @Inject
-    ClienteRepository repositoryCliete;
+    ClienteRepository repositoryCliente;
     @Inject
     EnderecoRepository repositoryEndereco;
 
     @Transactional
     @Override
     public EnderecoResponseDTO insert(EnderecoDTO dto, Long idCliente) {
-        Cliente cliente = repositoryCliete.findById(idCliente);
+        Cliente cliente = repositoryCliente.findById(idCliente);
         Endereco novoEndereco = new Endereco();
 
         novoEndereco.setLogradouro(dto.getLogradouro());
@@ -32,7 +32,7 @@ public class EnderecoServiceImpl implements EnderecoService{
         novoEndereco.setCep(dto.getCep());
 
         cliente.getEnderecos().add(novoEndereco);
-        repositoryCliete.persist(cliente);
+        repositoryCliente.persist(cliente);
         return EnderecoResponseDTO.valueOf(novoEndereco);
     }
 
