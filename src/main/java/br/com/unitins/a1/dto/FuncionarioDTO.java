@@ -3,8 +3,6 @@ package br.com.unitins.a1.dto;
 import br.com.unitins.a1.model.NivelAcesso;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class FuncionarioDTO {
@@ -17,10 +15,10 @@ public class FuncionarioDTO {
     @NotBlank(message = "Campo senha não pode ser nulo!")
     @Size(min = 6, message = "Senha deve ter no mínimo 6 caracters!")
     private final String senha;
-    private final LocalDate nascimento;
+    private final String nascimento;
     private final NivelAcesso tipoAcesso;
 
-    public FuncionarioDTO(String nome, String cpf, String email, String senha, LocalDate nascimento, NivelAcesso tipoAcesso) {
+    public FuncionarioDTO(String nome, String cpf, String email, String senha, String nascimento, NivelAcesso tipoAcesso) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -41,7 +39,7 @@ public class FuncionarioDTO {
         return email;
     }
 
-    public LocalDate getNascimento() {
+    public String getNascimento() {
         return nascimento;
     }
 

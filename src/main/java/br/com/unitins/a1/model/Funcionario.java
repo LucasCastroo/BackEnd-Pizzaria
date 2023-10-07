@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-import java.time.LocalDate;
-
 @Entity
 public class Funcionario extends DefaultEntity{
     private String nome;
@@ -14,7 +12,7 @@ public class Funcionario extends DefaultEntity{
     private String cpf;
     private String email;
     private String senha;
-    private LocalDate nascimento;
+    private String nascimento;
     @Enumerated(EnumType.STRING)
     private NivelAcesso tipoAcesso;
 
@@ -34,11 +32,11 @@ public class Funcionario extends DefaultEntity{
         this.cpf = cpf;
     }
 
-    public LocalDate getNascimento() {
+    public String getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(LocalDate nascimento) {
+    public void setNascimento(String nascimento) {
         this.nascimento = nascimento;
     }
 
