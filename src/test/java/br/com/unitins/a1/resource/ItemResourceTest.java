@@ -36,13 +36,13 @@ class ItemResourceTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(dto)
-                .when().post("/item")
+                .when().post("/item/pizza")
                 .then()
                 .statusCode(201)
                 .body("id", notNullValue(),
                         "nome", is("Pizza de Calabresa"),
                         "descricao", is("Calabresa, Cheddar e Ovo"),
-                        "preco", is(40.00),
+                        "preco", is(40.00f),
                         "kCal", is(600),
                         "tamanhoPizza", is(TamanhoPizza.MEDIA.name()),
                         "tempoDePreparo", is(25)
@@ -62,13 +62,13 @@ class ItemResourceTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(dto)
-                .when().post("/item")
+                .when().post("/item/bebida")
                 .then()
                 .statusCode(201)
                 .body("id", notNullValue(),
                         "nome", is("Coca-Cola"),
                         "descricao", is("Bebida Gelada"),
-                        "preco", is(4.0),
+                        "preco", is(4.0f),
                         "kCal", is(100),
                         "ml", is(350)
                 );
