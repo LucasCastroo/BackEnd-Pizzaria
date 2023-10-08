@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
@@ -42,7 +43,7 @@ public class PedidoServiceImpl implements PedidoService{
         ep.setCep(endereco.getCep());
         ep.setCidade(endereco.getCidade());
         pedido.setEndereco(ep);
-        pedido.getItems().addAll(
+        if(pedido.getItems() != null) pedido.getItems().addAll(
                 dto.items().stream().map(i ->{
                     ItemPedido itemPedido = new ItemPedido();
                     itemPedido.setQuant(i.quantidade());
