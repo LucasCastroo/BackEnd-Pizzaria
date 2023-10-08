@@ -1,4 +1,4 @@
-package br.com.unitins.a1;
+package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.*;
 import br.com.unitins.a1.model.Funcionario;
