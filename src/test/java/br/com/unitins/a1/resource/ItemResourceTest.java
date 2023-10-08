@@ -1,6 +1,7 @@
 package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.*;
+import br.com.unitins.a1.model.Bebida;
 import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.model.Pizza;
 import br.com.unitins.a1.model.TamanhoPizza;
@@ -111,25 +112,66 @@ class ItemResourceTest {
         assertThat(piz.getNome(), is("Pizza de Calabresa"));
         assertThat(piz.getDescricao(), is("Calabresa, Cheddar, Ovo e Azeitona"));
         assertThat(piz.getPreco(), is(45.0));
-        assertThat(piz.getTamanhoPizza(), is(TamanhoPizza.MEDIA.name()));
+        assertThat(piz.getTamanhoPizza(), is(TamanhoPizza.MEDIA));
         assertThat(piz.getIngredientes(), is("Calabresa, Cheddar, Ovo e Azeitona"));
         assertThat(piz.getTempoDePreparo(), is(25));
     }
 
     @Test
     void updateBebida() {
+        BebidaDTO dto = new BebidaDTO(
+                "Coca-Cola",
+                "Bebida Gelada",
+                4.0,
+                100,
+                350
+        );
+
+        Bebida bebidaTest = itemService.createBebida(dto);
+        Long id = bebidaTest.getId();
+
+        BebidaDTO dtoUpdate = new BebidaDTO(
+                "Coca-Cola",
+                "Bebida Gelada",
+                6.0,
+                100,
+                350
+        );
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(dtoUpdate)
+                .when().put("/item/bebida/"+ id)
+                .then()
+                .statusCode(202);
+
+        Bebida beb = itemService.findBebida(id);
+        assertThat(beb.getNome(), is("Coca-Cola"));
+        assertThat(beb.getDescricao(), is("Bebida Gelada"));
+        assertThat(beb.getPreco(), is(6.0));
+        assertThat(beb.getkCal(), is(100));
+        assertThat(beb.getMl(), is(350));
     }
 
-    @Test
-    void testUpdatePizza() {
-    }
-
-    @Test
-    void testUpdateBebida() {
-    }
 
     @Test
     void findPizza() {
+        PizzaDTO dto = new PizzaDTO(
+                "Pizza de Calabresa",
+                "Calabresa, Cheddar e Ovo",
+                40.0,
+                600,
+                TamanhoPizza.MEDIA,
+                "Calabresa, Cheddar e Ovo",
+                25
+        );
+
+        Pizza pizzaTest = itemService.createPizza(dto);
+
+        given()
+                .when().get("/item/pizza/" + pizzaTest)
+                .then()
+                .statusCode(200);
     }
 
     @Test
