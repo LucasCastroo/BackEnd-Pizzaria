@@ -13,14 +13,19 @@ public record ClienteResponseDTO(
         List<EnderecoDTO> enderecos
 ) {
     public static ClienteResponseDTO valueOf(Cliente cliente) {
-        return new ClienteResponseDTO(
-                cliente.getId(),
-                cliente.getNome(),
-                cliente.getCpf(),
-                cliente.getEmail(),
-                cliente.getTelefone(),
-                cliente.getNascimento(),
-                cliente.getEnderecos().stream().map(e -> new EnderecoDTO(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList()
-        );
+        try{
+            return new ClienteResponseDTO(
+                    cliente.getId(),
+                    cliente.getNome(),
+                    cliente.getCpf(),
+                    cliente.getEmail(),
+                    cliente.getTelefone(),
+                    cliente.getNascimento(),
+                    cliente.getEnderecos().stream().map(e -> new EnderecoDTO(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList()
+            );
+        }catch (NullPointerException e){
+            return null;
+        }
+
     }
 }

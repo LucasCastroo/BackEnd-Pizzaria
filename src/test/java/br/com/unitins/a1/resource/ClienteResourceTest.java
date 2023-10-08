@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
 public class ClienteResourceTest {
@@ -100,5 +100,78 @@ public class ClienteResourceTest {
         assertThat(cli.email(), is("janio@gmail.com"));
         assertThat(cli.telefone(), is("(22) 22222-2222"));
         assertThat(cli.nascimento(), is("1994-01-01"));
+    }
+
+    @Test
+    void delete() {
+        List<EnderecoDTO> enderecos = new ArrayList<>();
+        enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas", "77777-777"));
+        ClienteDTO dto = new ClienteDTO(
+                "Janio Junior",
+                "111.111.111-11",
+                "janio@gmail.com",
+                "111111",
+                "(11) 11111-1111",
+                "1994-01-01",
+                enderecos
+        );
+
+        ClienteResponseDTO cliente = clienteService.insert(dto);
+        given()
+                .when().delete("/clientes/" + cliente.id())
+                .then()
+                .statusCode(204);
+
+        assertNull(clienteService.findById(cliente.id()));
+    }
+
+    @Test
+    void findById() {
+        List<EnderecoDTO> enderecos = new ArrayList<>();
+        enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas", "77777-777"));
+        ClienteDTO dto = new ClienteDTO(
+                "Janio Junior",
+                "111.111.111-11",
+                "janio@gmail.com",
+                "111111",
+                "(11) 11111-1111",
+                "1994-01-01",
+                enderecos
+        );
+
+        ClienteResponseDTO cliente = clienteService.insert(dto);
+
+        given()
+                .when().get("/clientes/search/id/" + cliente.id())
+                .then()
+                .statusCode(200)
+                .body(
+                        "id", is(cliente.id().intValue())
+                );
+    }
+
+    @Test
+    void findByNome() {
+        List<EnderecoDTO> enderecos = new ArrayList<>();
+        enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas", "77777-777"));
+        ClienteDTO dto = new ClienteDTO(
+                "Janio Junior",
+                "111.111.111-11",
+                "janio@gmail.com",
+                "111111",
+                "(11) 11111-1111",
+                "1994-01-01",
+                enderecos
+        );
+
+        ClienteResponseDTO cliente = clienteService.insert(dto);
+
+        given()
+                .when().get("/clientes/search/nome/janio")
+                .then()
+                .statusCode(200)
+                .body(
+                        "id", hasItem(cliente.id().intValue())
+                );
     }
 }

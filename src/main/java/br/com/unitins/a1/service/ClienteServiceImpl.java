@@ -57,6 +57,7 @@ public class ClienteServiceImpl implements ClienteService{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         if (!repository.deleteById(id)) {
             throw new NotFoundException();

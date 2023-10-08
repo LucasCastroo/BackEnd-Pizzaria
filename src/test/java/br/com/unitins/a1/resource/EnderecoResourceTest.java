@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
-class CupomResourceTest {
+class EnderecoResourceTest {
 
     @Test
-    void create() {
+    void insert() {
     }
 
     @Test
@@ -25,6 +25,6 @@ class CupomResourceTest {
     }
 
     @Test
-    void findByCodigo() {
+    void findByNome() {
     }
 }
