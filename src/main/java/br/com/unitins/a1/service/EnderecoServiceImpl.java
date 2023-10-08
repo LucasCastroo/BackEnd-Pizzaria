@@ -24,12 +24,7 @@ public class EnderecoServiceImpl implements EnderecoService{
     @Override
     public EnderecoResponseDTO insert(EnderecoDTO dto, Long idCliente) {
         Cliente cliente = repositoryCliente.findById(idCliente);
-        Endereco novoEndereco = new Endereco();
-
-        novoEndereco.setLogradouro(dto.getLogradouro());
-        novoEndereco.setBairro(dto.getBairro());
-        novoEndereco.setCidade(dto.getCidade());
-        novoEndereco.setCep(dto.getCep());
+        Endereco novoEndereco = new Endereco(dto.getLogradouro(), dto.getBairro(), dto.getCidade(), dto.getCep());
 
         cliente.getEnderecos().add(novoEndereco);
         repositoryCliente.persist(cliente);

@@ -54,3 +54,30 @@ VALUES (1, 'Calabresa, queijo, molho de tomate', 'MEDIA', 20),
 INSERT INTO Bebida (id, ml)
 VALUES (2, 350),
        (3, 1000);
+
+INSERT INTO Pedido (formaPagamento, total, id_cliente, id_cupom, id_endereco)
+VALUES
+    ('CARTAO', 50.00, 1, 1, 1),
+    ('DINHEIRO', 35.00, 2, NULL, 2),
+    ('PIX', 42.50, 3, NULL, 3),
+    ('CARTAO', 60.00, 4, 2, 4),
+    ('DINHEIRO', 27.50, 5, NULL, 5);
+
+INSERT INTO StatusPedido (horario, status, id_pedido)
+VALUES
+    ('2023-10-01 10:16:00', 'AGUARDANDO_PAGAMENTO', 1),
+    ('2023-10-01 11:30:00', 'EM_PREPARO', 1),
+    ('2023-10-01 15:45:00', 'EM_ENTREGA', 1),
+    ('2023-10-02 14:21:00', 'AGUARDANDO_PAGAMENTO', 2),
+    ('2023-10-02 16:00:00', 'CANCELADO', 2),
+    ('2023-10-03 08:31:00', 'AGUARDANDO_PAGAMENTO', 3),
+    ('2023-10-03 12:45:00', 'EM_PREPARO', 3),
+    ('2023-10-03 16:20:00', 'EM_ENTREGA', 3),
+    ('2023-10-03 20:10:00', 'ENTREGUE', 3),
+    ('2023-10-04 16:46:00', 'AGUARDANDO_PAGAMENTO', 4),
+    ('2023-10-04 18:15:00', 'EM_PREPARO', 4),
+    ('2023-10-04 22:30:00', 'EM_ENTREGA', 4),
+    ('2023-10-05 09:40:00', 'ENTREGUE', 4),
+    ('2023-10-05 12:11:00', 'AGUARDANDO_PAGAMENTO', 5),
+    ('2023-10-05 14:30:00', 'CANCELADO', 5);
+
