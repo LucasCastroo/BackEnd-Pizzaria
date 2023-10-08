@@ -55,6 +55,13 @@ INSERT INTO Bebida (id, ml)
 VALUES (2, 350),
        (3, 1000);
 
+INSERT INTO EnderecoPedido (id_endereco, bairro, cep, cidade, logradouro)
+VALUES (1, 'Centro', '12345-678', 'Cidade A', 'Rua Principal, 123'),
+       (2, 'Bairro 1', '98765-432', 'Cidade B', 'Avenida Secundária, 456'),
+       (3, 'Bairro 2', '54321-987', 'Cidade C', 'Travessa da Esquina, 789'),
+       (4, 'Bairro 3', '13579-246', 'Cidade D', 'Rua das Flores, 101'),
+       (5, 'Bairro 4', '87654-321', 'Cidade E', 'Avenida das Árvores, 222');
+
 INSERT INTO Pedido (formaPagamento, total, id_cliente, id_cupom, id_endereco)
 VALUES
     ('CARTAO', 50.00, 1, 1, 1),
