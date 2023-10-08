@@ -1,5 +1,6 @@
 package br.com.unitins.a1.model;
 
+import br.com.unitins.a1.dto.EnderecoDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;

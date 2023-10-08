@@ -21,9 +21,9 @@ public class ClienteDTO {
     @Size(min = 11, message = "Campo telefone deve conter no mínimo 11 caracters!")
     private final String telefone;
     private final String nascimento;
-    private final List<Endereco> enderecos;
+    private final List<EnderecoDTO> enderecos;
 
-    public ClienteDTO(String nome, String cpf, String email, String senha, String telefone, String nascimento, List<Endereco> enderecos) {
+    public ClienteDTO(String nome, String cpf, String email, String senha, String telefone, String nascimento, List<EnderecoDTO> enderecos) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -55,7 +55,7 @@ public class ClienteDTO {
         return nascimento;
     }
 
-    public List<Endereco> getEnderecos() {
+    public List<EnderecoDTO> getEnderecos() {
         return enderecos;
     }
 

@@ -16,6 +16,19 @@ public class Funcionario extends DefaultEntity{
     @Enumerated(EnumType.STRING)
     private NivelAcesso tipoAcesso;
 
+    public Funcionario(String nome, String cpf, String email, String senha, String nascimento, NivelAcesso tipoAcesso) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
+        this.nascimento = nascimento;
+        this.tipoAcesso = tipoAcesso;
+    }
+
+    public Funcionario() {
+
+    }
+
     public String getNome() {
         return nome;
     }

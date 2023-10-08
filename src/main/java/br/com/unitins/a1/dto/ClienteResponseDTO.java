@@ -1,7 +1,6 @@
 package br.com.unitins.a1.dto;
 
 import br.com.unitins.a1.model.Cliente;
-import br.com.unitins.a1.model.Endereco;
 import java.util.List;
 
 public record ClienteResponseDTO(
@@ -11,7 +10,7 @@ public record ClienteResponseDTO(
         String email,
         String telefone,
         String nascimento,
-        List<Endereco> enderecos
+        List<EnderecoDTO> enderecos
 ) {
     public static ClienteResponseDTO valueOf(Cliente cliente) {
         return new ClienteResponseDTO(
@@ -21,7 +20,7 @@ public record ClienteResponseDTO(
                 cliente.getEmail(),
                 cliente.getTelefone(),
                 cliente.getNascimento(),
-                cliente.getEnderecos()
+                cliente.getEnderecos().stream().map(e -> new EnderecoDTO(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList()
         );
     }
 }

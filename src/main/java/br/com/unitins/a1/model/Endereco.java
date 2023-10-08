@@ -13,6 +13,17 @@ public class Endereco extends DefaultEntity{
     @Size(min = 6, max = 7)
     private String cep;
 
+    public Endereco() {
+
+    }
+
+    public Endereco(String logradouro, String bairro, String cidade, String cep) {
+        this.logradouro = logradouro;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.cep = cep;
+    }
+
     public String getLogradouro() {
         return logradouro;
     }

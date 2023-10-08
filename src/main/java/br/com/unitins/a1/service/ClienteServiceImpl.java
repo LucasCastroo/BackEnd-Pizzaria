@@ -3,6 +3,7 @@ package br.com.unitins.a1.service;
 import br.com.unitins.a1.dto.ClienteDTO;
 import br.com.unitins.a1.dto.ClienteResponseDTO;
 import br.com.unitins.a1.model.Cliente;
+import br.com.unitins.a1.model.Endereco;
 import br.com.unitins.a1.repository.ClienteRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -28,7 +29,7 @@ public class ClienteServiceImpl implements ClienteService{
         novoCliente.setSenha(dto.getSenha());
         novoCliente.setNascimento(dto.getNascimento());
         novoCliente.setTelefone(dto.getTelefone());
-        novoCliente.setEnderecos(dto.getEnderecos());
+        novoCliente.setEnderecos(dto.getEnderecos().stream().map(e -> new Endereco(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList());
 
         repository.persist(novoCliente);
 
@@ -46,7 +47,7 @@ public class ClienteServiceImpl implements ClienteService{
             Cliente.setSenha(dto.getSenha());
             Cliente.setNascimento(dto.getNascimento());
             Cliente.setTelefone(dto.getTelefone());
-            Cliente.setEnderecos(dto.getEnderecos());
+            Cliente.setEnderecos(dto.getEnderecos().stream().map(e -> new Endereco(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList());
         } else {
             throw new NotFoundException();
         }
