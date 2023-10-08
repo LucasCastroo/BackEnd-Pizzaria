@@ -74,7 +74,7 @@ public class FuncionarioResourceTest {
                 .then()
                 .statusCode(204);
 
-        FuncionarioResponseDTO fun = funcionarioService.findById(6l);
+        FuncionarioResponseDTO fun = funcionarioService.findById(id);
         assertThat(fun.nome(), is("Mailson"));
         assertThat(fun.cpf(), is("222.222.222-22"));
         assertThat(fun.email(), is("mailson@gmail.com"));

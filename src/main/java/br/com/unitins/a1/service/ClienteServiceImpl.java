@@ -39,20 +39,21 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     @Transactional
     public ClienteResponseDTO update(ClienteDTO dto, Long id) {
-        Cliente Cliente = repository.findById(id);
-        if (Cliente != null) {
-            Cliente.setNome(dto.getNome());
-            Cliente.setCpf(dto.getCpf());
-            Cliente.setEmail(dto.getEmail());
-            Cliente.setSenha(dto.getSenha());
-            Cliente.setNascimento(dto.getNascimento());
-            Cliente.setTelefone(dto.getTelefone());
-            Cliente.setEnderecos(dto.getEnderecos().stream().map(e -> new Endereco(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList());
+        Cliente cliente = repository.findById(id);
+        if (cliente != null) {
+            cliente.setNome(dto.getNome());
+            cliente.setCpf(dto.getCpf());
+            cliente.setEmail(dto.getEmail());
+            cliente.setSenha(dto.getSenha());
+            cliente.setNascimento(dto.getNascimento());
+            cliente.setTelefone(dto.getTelefone());
+            cliente.getEnderecos().clear();
+            cliente.getEnderecos().addAll(dto.getEnderecos().stream().map(e -> new Endereco(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList());
         } else {
             throw new NotFoundException();
         }
 
-        return ClienteResponseDTO.valueOf(Cliente);
+        return ClienteResponseDTO.valueOf(cliente);
     }
 
     @Override
