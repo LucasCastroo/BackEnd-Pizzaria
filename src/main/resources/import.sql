@@ -23,7 +23,7 @@ VALUES
     ('Bairro 3', '13579-246', 'Cidade D', 'Rua das Flores, 101'),
     ('Bairro 4', '87654-321', 'Cidade E', 'Avenida das Árvores, 222');
 
-INSERT INTO Cliente_Endereco (Cliente_id, enderecos_id)
+INSERT INTO Cliente_Endereco (id_cliente, id_endereco)
 VALUES
     (1, 1),
     (2, 2),

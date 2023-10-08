@@ -49,7 +49,7 @@ public class EnderecoServiceImpl implements EnderecoService{
     @Override
     @Transactional
     public void delete(Long idEndereco) {
-        if (!repositoryEndereco.deleteById(idEndereco)) {
+        if (!repositoryEndereco.delete(idEndereco)) {
             throw new NotFoundException();
         }
     }
