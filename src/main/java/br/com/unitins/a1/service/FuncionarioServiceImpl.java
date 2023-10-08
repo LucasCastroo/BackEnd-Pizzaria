@@ -52,6 +52,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         if (!repository.deleteById(id)) {
             throw new NotFoundException();

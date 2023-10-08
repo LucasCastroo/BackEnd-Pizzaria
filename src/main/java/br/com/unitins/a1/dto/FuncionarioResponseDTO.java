@@ -12,13 +12,17 @@ public record FuncionarioResponseDTO(
     NivelAcesso tipoAcesso
 ) {
     public static FuncionarioResponseDTO valueOf(Funcionario funcionario) {
-        return new FuncionarioResponseDTO(
-                funcionario.getId(),
-                funcionario.getNome(),
-                funcionario.getEmail(),
-                funcionario.getCpf(),
-                funcionario.getNascimento(),
-                funcionario.getTipoAcesso()
-        );
+        try {
+            return new FuncionarioResponseDTO(
+                    funcionario.getId(),
+                    funcionario.getNome(),
+                    funcionario.getEmail(),
+                    funcionario.getCpf(),
+                    funcionario.getNascimento(),
+                    funcionario.getTipoAcesso()
+            );
+        }catch (NullPointerException e){
+            return null;
+        }
     }
 }

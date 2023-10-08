@@ -8,10 +8,14 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
 public class FuncionarioResourceTest {
@@ -19,7 +23,7 @@ public class FuncionarioResourceTest {
     FuncionarioService funcionarioService;
 
     @Test
-    public void testInsert() {
+    public void insert() {
         Funcionario dto = new Funcionario(
                 "Mailson",
                 "222.222.222-22",
@@ -45,7 +49,7 @@ public class FuncionarioResourceTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void update() {
         FuncionarioDTO dto = new FuncionarioDTO(
                 "Mailson",
                 "222.222.222-22",
@@ -80,5 +84,69 @@ public class FuncionarioResourceTest {
         assertThat(fun.email(), is("mailson@gmail.com"));
         assertThat(fun.nascimento(), is("1986-07-18"));
         assertThat(fun.tipoAcesso(), is(NivelAcesso.ADMIN));
+    }
+
+    @Test
+    void delete() {
+        FuncionarioDTO dto = new FuncionarioDTO(
+                "Mailson",
+                "222.222.222-22",
+                "mailson@gmail.com",
+                "222222",
+                "1986-07-18",
+                NivelAcesso.GERENTE
+        );
+
+        FuncionarioResponseDTO funcionario = funcionarioService.insert(dto);
+        given()
+                .when().delete("/funcionarios/" + funcionario.id())
+                .then()
+                .statusCode(204);
+
+        assertNull(funcionarioService.findById(funcionario.id()));
+    }
+
+    @Test
+    void findById() {
+        FuncionarioDTO dto = new FuncionarioDTO(
+                "Mailson",
+                "222.222.222-22",
+                "mailson@gmail.com",
+                "222222",
+                "1986-07-18",
+                NivelAcesso.GERENTE
+        );
+
+        FuncionarioResponseDTO funcionario = funcionarioService.insert(dto);
+
+        given()
+                .when().get("/funcionarios/search/id/" + funcionario.id())
+                .then()
+                .statusCode(200)
+                .body(
+                        "id", is(funcionario.id().intValue())
+                );
+    }
+
+    @Test
+    void findByNome() {
+        FuncionarioDTO dto = new FuncionarioDTO(
+                "Mailson",
+                "222.222.222-22",
+                "mailson@gmail.com",
+                "222222",
+                "1986-07-18",
+                NivelAcesso.GERENTE
+        );
+
+        FuncionarioResponseDTO funcionario = funcionarioService.insert(dto);
+
+        given()
+                .when().get("/funcionarios/search/nome/mailson")
+                .then()
+                .statusCode(200)
+                .body(
+                        "id", hasItem(funcionario.id().intValue())
+                );
     }
 }

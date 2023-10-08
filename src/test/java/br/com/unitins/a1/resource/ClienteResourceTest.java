@@ -24,7 +24,7 @@ public class ClienteResourceTest {
     ClienteService clienteService;
 
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         given()
                 .when().get("/clientes")
                 .then()
@@ -32,7 +32,7 @@ public class ClienteResourceTest {
     }
 
     @Test
-    public void testInsert() {
+    void testInsert() {
         List<EnderecoDTO> enderecos = new ArrayList<>();
         enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas",  "77777-777"));
         ClienteDTO dto = new ClienteDTO(
@@ -61,7 +61,7 @@ public class ClienteResourceTest {
     }
 
     @Test
-    public void testUpdate() {
+    void testUpdate() {
         List<EnderecoDTO> enderecos = new ArrayList<>();
         enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas", "77777-777"));
         ClienteDTO dto = new ClienteDTO(
