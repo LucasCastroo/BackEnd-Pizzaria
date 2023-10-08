@@ -8,7 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class CupomRepository implements PanacheRepository<Cupom> {
     public Cupom findByCodigo(String codigo) {
         try {
-            return find("LOWER(codigo) = LOWER(?1)", codigo).singleResult();
+            return find("LOWER(codigo) = LOWER(?1)", codigo).firstResult();
         } catch (Exception e) {
             return null;
         }

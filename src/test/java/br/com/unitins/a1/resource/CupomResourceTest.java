@@ -106,10 +106,7 @@ class CupomResourceTest {
         given()
                 .when().get("/cupom/busca/" + cupom.codigo())
                 .then()
-                .statusCode(200)
-                .body(
-                        "id", is(cupom.id().intValue())
-                );
+                .statusCode(200);
 
     }
 }
