@@ -23,7 +23,8 @@ public class CupomResource {
     @PUT
     @Path("/{id}")
     public Response update(CupomDTO dto, @PathParam("id") Long id){
-        return Response.accepted().entity(service.update(dto, id)).build();
+        service.update(dto, id);
+        return Response.noContent().build();
     }
 
     @DELETE
