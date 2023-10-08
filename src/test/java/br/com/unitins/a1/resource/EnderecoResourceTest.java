@@ -3,8 +3,10 @@ package br.com.unitins.a1.resource;
 import br.com.unitins.a1.dto.*;
 import br.com.unitins.a1.model.Endereco;
 import br.com.unitins.a1.model.NivelAcesso;
+import br.com.unitins.a1.service.ClienteService;
 import br.com.unitins.a1.service.EnderecoService;
 import br.com.unitins.a1.service.FuncionarioService;
+import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
@@ -23,6 +25,10 @@ class EnderecoResourceTest {
 
     @Inject
     EnderecoService enderecoService;
+
+    @Inject
+    ClienteService clienteService;
+
     @Test
     void insert() {
         EnderecoDTO dto = new EnderecoDTO(
@@ -31,11 +37,22 @@ class EnderecoResourceTest {
                 "Palmas",
                 "11111-111"
         );
+        ClienteDTO clienteDTO = new ClienteDTO(
+                "Janio Junior",
+                "111.111.111-11",
+                "janio@gmail.com",
+                "111111",
+                "(11) 11111-1111",
+                "1994-01-01",
+                null
+        );
+
+        ClienteResponseDTO cliente = clienteService.insert(clienteDTO);
 
         given()
                 .contentType(ContentType.JSON)
                 .body(dto)
-                .when().post("/enderecos/criar/2")
+                .when().post("/enderecos/criar/" + cliente.id())
                 .then()
                 .statusCode(201)
                 .body("id", notNullValue(),
@@ -55,8 +72,19 @@ class EnderecoResourceTest {
                 "11111-111"
         );
 
-        EnderecoResponseDTO enderecoTest = enderecoService.insert(dto);
-        Long id = enderecoTest.id();
+        ClienteDTO clienteDTO = new ClienteDTO(
+                "Janio Junior",
+                "111.111.111-11",
+                "janio@gmail.com",
+                "111111",
+                "(11) 11111-1111",
+                "1994-01-01",
+                null
+        );
+
+        ClienteResponseDTO cliente = clienteService.insert(clienteDTO);
+
+        EnderecoResponseDTO enderecoTest = enderecoService.insert(dto, cliente.id());
 
         EnderecoDTO dtoUpdate = new EnderecoDTO(
                 "Rua 05, Qd 01, Lote 10",
@@ -68,11 +96,11 @@ class EnderecoResourceTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(dtoUpdate)
-                .when().put("/enderecos/criar"+ id)
+                .when().put("/enderecos/"+ enderecoTest.id())
                 .then()
                 .statusCode(204);
 
-        EnderecoResponseDTO end = enderecoService.findById(id);
+        EnderecoResponseDTO end = enderecoService.findById(enderecoTest.id());
         assertThat(end.logradouro(), is("Rua 05, Qd 01, Lote 10"));
         assertThat(end.bairro(), is("303 sul"));
         assertThat(end.cidade(), is("Palmas"));
@@ -87,10 +115,22 @@ class EnderecoResourceTest {
                 "Palmas",
                 "11111-111"
         );
+        ClienteDTO clienteDTO = new ClienteDTO(
+                "Janio Junior",
+                "111.111.111-11",
+                "janio@gmail.com",
+                "111111",
+                "(11) 11111-1111",
+                "1994-01-01",
+                null
+        );
 
-        EnderecoResponseDTO endereco = enderecoService.insert(dto);
+        ClienteResponseDTO cliente = clienteService.insert(clienteDTO);
+
+        EnderecoResponseDTO endereco = enderecoService.insert(dto, cliente.id());
+        Log.info(endereco);
         given()
-                .when().delete("/endereco/" + endereco.id())
+                .when().delete("/enderecos/" + endereco.id())
                 .then()
                 .statusCode(204);
 
@@ -106,10 +146,22 @@ class EnderecoResourceTest {
                 "11111-111"
         );
 
-        EnderecoResponseDTO endereco = enderecoService.insert(dto);
+        ClienteDTO clienteDTO = new ClienteDTO(
+                "Janio Junior",
+                "111.111.111-11",
+                "janio@gmail.com",
+                "111111",
+                "(11) 11111-1111",
+                "1994-01-01",
+                null
+        );
+
+        ClienteResponseDTO cliente = clienteService.insert(clienteDTO);
+
+        EnderecoResponseDTO endereco = enderecoService.insert(dto, cliente.id());
 
         given()
-                .when().get("/funcionarios/search/id/" + endereco.id())
+                .when().get("/enderecos/search/id/" + endereco.id())
                 .then()
                 .statusCode(200)
                 .body(
@@ -126,10 +178,10 @@ class EnderecoResourceTest {
                 "11111-111"
         );
 
-        EnderecoResponseDTO endereco = enderecoService.insert(dto);
+        EnderecoResponseDTO endereco = enderecoService.insert(dto, 1L);
 
         given()
-                .when().get("/endereco/search/logradouro/???")
+                .when().get("/enderecos/search/logradouro/Rua 01, Qd 01, Lote 01")
                 .then()
                 .statusCode(200)
                 .body(

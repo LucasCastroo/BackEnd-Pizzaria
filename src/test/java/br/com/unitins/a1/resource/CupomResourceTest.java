@@ -3,6 +3,7 @@ package br.com.unitins.a1.resource;
 import br.com.unitins.a1.dto.CupomDTO;
 import br.com.unitins.a1.dto.CupomResponseDTO;
 import br.com.unitins.a1.service.CupomService;
+import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
@@ -101,8 +102,9 @@ class CupomResourceTest {
                 0.1
         );
         CupomResponseDTO cupom = service.create(dto);
+
         given()
-                .when().get("/cupom/busca/CUPOMDETESTE")
+                .when().get("/cupom/busca/" + cupom.codigo())
                 .then()
                 .statusCode(200)
                 .body(

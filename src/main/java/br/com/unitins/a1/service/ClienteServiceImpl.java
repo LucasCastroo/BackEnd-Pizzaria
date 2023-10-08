@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
@@ -29,7 +30,8 @@ public class ClienteServiceImpl implements ClienteService{
         novoCliente.setSenha(dto.getSenha());
         novoCliente.setNascimento(dto.getNascimento());
         novoCliente.setTelefone(dto.getTelefone());
-        novoCliente.setEnderecos(dto.getEnderecos().stream().map(e -> new Endereco(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList());
+        if(dto.getEnderecos() != null) novoCliente.setEnderecos(dto.getEnderecos().stream().map(e -> new Endereco(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList());
+        else novoCliente.setEnderecos(Collections.emptyList());
 
         repository.persist(novoCliente);
 

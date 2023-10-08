@@ -1,6 +1,7 @@
 package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.CupomDTO;
+import br.com.unitins.a1.dto.CupomResponseDTO;
 import br.com.unitins.a1.service.CupomService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -43,6 +44,8 @@ public class CupomResource {
     @GET
     @Path("/busca/{codigo}")
     public Response findByCodigo(@PathParam("codigo") String codigo){
-        return Response.ok().entity(service.findByCodigo(codigo)).build();
+        CupomResponseDTO cupom = service.findByCodigo(codigo);
+        if(cupom != null) return Response.ok().entity(cupom).build();
+        else return Response.status(404).build();
     }
 }

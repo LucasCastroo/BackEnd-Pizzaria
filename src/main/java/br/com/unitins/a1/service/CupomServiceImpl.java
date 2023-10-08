@@ -16,7 +16,7 @@ public class CupomServiceImpl implements CupomService{
 
     @Override
     @Transactional
-    public CupomResponseDTO create(@Valid CupomDTO dto) {
+    public CupomResponseDTO create(CupomDTO dto) {
         Cupom cupom = dto.valueOf();
         repository.persist(cupom);
         return CupomResponseDTO.from(cupom);

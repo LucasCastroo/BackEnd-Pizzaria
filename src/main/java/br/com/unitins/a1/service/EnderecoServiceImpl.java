@@ -27,7 +27,7 @@ public class EnderecoServiceImpl implements EnderecoService{
         Endereco novoEndereco = new Endereco(dto.getLogradouro(), dto.getBairro(), dto.getCidade(), dto.getCep());
 
         cliente.getEnderecos().add(novoEndereco);
-        repositoryCliente.persist(cliente);
+        repositoryCliente.persistAndFlush(cliente);
         return EnderecoResponseDTO.valueOf(novoEndereco);
     }
 
@@ -61,6 +61,6 @@ public class EnderecoServiceImpl implements EnderecoService{
 
     @Override
     public List<EnderecoResponseDTO> findByLogradouro(String logradouro) {
-        return repositoryEndereco.findByLogradouro(logradouro).stream().map(l -> EnderecoResponseDTO.valueOf(l)).toList();
+        return repositoryEndereco.findByLogradouro(logradouro).stream().map(EnderecoResponseDTO::valueOf).toList();
     }
 }

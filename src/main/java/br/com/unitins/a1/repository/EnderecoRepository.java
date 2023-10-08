@@ -9,7 +9,7 @@ import java.util.List;
 @ApplicationScoped
 public class EnderecoRepository implements PanacheRepository<Endereco> {
     public List<Endereco> findByLogradouro(String logradouro) {
-        return find("UPPER(nome) LIKE UPPER(?1) ", "%"+logradouro+"%").list();
+        return find("UPPER(logradouro) LIKE UPPER(?1) ", "%"+logradouro+"%").list();
     }
 
     public boolean delete(Long id){

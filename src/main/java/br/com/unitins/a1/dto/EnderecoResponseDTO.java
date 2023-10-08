@@ -10,12 +10,16 @@ public record EnderecoResponseDTO(
         String cep
 ) {
     public static EnderecoResponseDTO valueOf(Endereco endereco){
-        return new EnderecoResponseDTO(
-                endereco.getId(),
-                endereco.getLogradouro(),
-                endereco.getBairro(),
-                endereco.getCidade(),
-                endereco.getCep()
-        );
+        try {
+            return new EnderecoResponseDTO(
+                    endereco.getId(),
+                    endereco.getLogradouro(),
+                    endereco.getBairro(),
+                    endereco.getCidade(),
+                    endereco.getCep()
+            );
+        }catch (NullPointerException e){
+            return null;
+        }
     }
 }
