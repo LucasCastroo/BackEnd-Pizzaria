@@ -94,7 +94,7 @@ public class ClienteResourceTest {
                 .then()
                 .statusCode(204);
 
-        ClienteResponseDTO cli = clienteService.findById(6l);
+        ClienteResponseDTO cli = clienteService.findById(id);
         assertThat(cli.nome(), is("Janio Junior"));
         assertThat(cli.cpf(), is("111.111.111-11"));
         assertThat(cli.email(), is("janio@gmail.com"));
