@@ -169,7 +169,7 @@ class ItemResourceTest {
         Pizza pizzaTest = itemService.createPizza(dto);
 
         given()
-                .when().get("/item/pizza/" + pizzaTest)
+                .when().get("/item/pizza/" + pizzaTest.getId())
                 .then()
                 .statusCode(200);
     }
