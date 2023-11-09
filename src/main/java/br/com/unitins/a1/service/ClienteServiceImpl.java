@@ -1,5 +1,6 @@
 package br.com.unitins.a1.service;
 
+import br.com.unitins.a1.dto.AlterarSenhaDTO;
 import br.com.unitins.a1.dto.ClienteDTO;
 import br.com.unitins.a1.dto.ClienteResponseDTO;
 import br.com.unitins.a1.model.Cliente;
@@ -18,6 +19,9 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Inject
     ClienteRepository repository;
+
+    @Inject
+    HashService hashService;
 
     @Override
     @Transactional
@@ -85,5 +89,19 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     public ClienteResponseDTO findByEmailSenha(String email, String senha) {
         return ClienteResponseDTO.valueOf(repository.findByEmailSenha(email, senha));
+    }
+
+    @Override
+    @Transactional
+    public Boolean alterarSenha(AlterarSenhaDTO dto, Long id) {
+        Cliente cliente = repository.findById(id);
+        if(cliente != null){
+            if(hashService.getHash(dto.antigaSenha()).equals(cliente.getSenha())){
+                cliente.setSenha(hashService.getHash(dto.novaSenha()));
+                repository.persist(cliente);
+                return true;
+            }
+        }
+        return false;
     }
 }
