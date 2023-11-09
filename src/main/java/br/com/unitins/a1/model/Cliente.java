@@ -1,6 +1,5 @@
 package br.com.unitins.a1.model;
 
-import br.com.unitins.a1.dto.EnderecoDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -43,6 +42,9 @@ public class Cliente extends DefaultEntity {
         this.email = email;
     }
 
+    public String getSenha() {
+        return senha;
+    }
 
     public void setSenha(String senha) {
         this.senha = senha;

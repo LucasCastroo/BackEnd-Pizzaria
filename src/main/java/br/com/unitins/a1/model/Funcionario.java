@@ -6,7 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @Entity
-public class Funcionario extends DefaultEntity{
+public class Funcionario extends DefaultEntity {
     private String nome;
     @Column(length = 14)
     private String cpf;
@@ -59,6 +59,10 @@ public class Funcionario extends DefaultEntity{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
     }
 
     public void setSenha(String senha) {
