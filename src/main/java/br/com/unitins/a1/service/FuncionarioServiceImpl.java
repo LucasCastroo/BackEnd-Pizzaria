@@ -1,5 +1,6 @@
 package br.com.unitins.a1.service;
 
+import br.com.unitins.a1.dto.AlterarSenhaDTO;
 import br.com.unitins.a1.dto.FuncionarioDTO;
 import br.com.unitins.a1.dto.FuncionarioResponseDTO;
 import br.com.unitins.a1.model.Funcionario;
@@ -15,6 +16,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Inject
     FuncionarioRepository repository;
+
+    @Inject
+    HashService hashService;
 
     @Override
     @Transactional
@@ -72,5 +76,18 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     public FuncionarioResponseDTO findByEmailSenha(String email, String senha) {
         return FuncionarioResponseDTO.valueOf(repository.findByEmailSenha(email, senha));
+    }
+
+    @Override
+    public Boolean alterarSenha(AlterarSenhaDTO dto, Long id) {
+        Funcionario funcionario = repository.findById(id);
+        if(funcionario != null){
+            if(hashService.getHash(dto.antigaSenha()).equals(funcionario.getSenha())){
+                funcionario.setSenha(hashService.getHash(dto.novaSenha()));
+                repository.persist(funcionario);
+                return true;
+            }
+        }
+        return false;
     }
 }
