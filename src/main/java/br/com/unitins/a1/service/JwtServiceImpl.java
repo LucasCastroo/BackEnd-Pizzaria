@@ -29,7 +29,7 @@ public class JwtServiceImpl implements JwtService{
         return Jwt.issuer("pizzaria-jwt")
                 .subject(String.valueOf(usuario.id()))
                 .upn(usuario.email())
-                .groups(Set.of(usuario.tipoAcesso().name()))
+                .groups(Set.of("FUNCIONARIO", usuario.tipoAcesso().name()))
                 .expiresAt(getExpiration())
                 .sign();
     }
