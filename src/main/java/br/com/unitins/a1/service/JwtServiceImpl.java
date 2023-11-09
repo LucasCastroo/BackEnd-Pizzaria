@@ -17,20 +17,20 @@ public class JwtServiceImpl implements JwtService{
     @Override
     public String generateJwt(ClienteResponseDTO usuario) {
         return Jwt.issuer("pizzaria-jwt")
-                .subject(usuario.email())
+                .subject(String.valueOf(usuario.id()))
+                .upn(usuario.email())
                 .groups(Set.of("USER"))
                 .expiresAt(getExpiration())
-                .claim("tipo", "CLIENTE") // armazenando o tipo de conta no token
                 .sign();
     }
 
     @Override
     public String generateJwt(FuncionarioResponseDTO usuario) {
         return Jwt.issuer("pizzaria-jwt")
-                .subject(usuario.email())
-                .groups(Set.of(usuario.tipoAcesso().name()))
+                .subject(String.valueOf(usuario.id()))
+                .upn(usuario.email())
+                .groups(Set.of("FUNCIONARIO", usuario.tipoAcesso().name()))
                 .expiresAt(getExpiration())
-                .claim("tipo", "FUNCIONARIO") // armazenando o tipo de conta no token
                 .sign();
     }
 
