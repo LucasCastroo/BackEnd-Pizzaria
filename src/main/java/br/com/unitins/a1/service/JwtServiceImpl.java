@@ -3,11 +3,13 @@ package br.com.unitins.a1.service;
 import br.com.unitins.a1.dto.ClienteResponseDTO;
 import br.com.unitins.a1.dto.FuncionarioResponseDTO;
 import io.smallrye.jwt.build.Jwt;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
 
+@ApplicationScoped
 public class JwtServiceImpl implements JwtService{
 
     private static final Duration TOKEN_DURATION = Duration.ofHours(24);

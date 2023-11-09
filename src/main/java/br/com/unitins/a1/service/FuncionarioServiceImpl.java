@@ -68,4 +68,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     public List<FuncionarioResponseDTO> findByNome(String nome) {
         return repository.findByNome(nome).stream().map(n -> FuncionarioResponseDTO.valueOf(n)).toList();
     }
+
+    @Override
+    public FuncionarioResponseDTO findByEmailSenha(String email, String senha) {
+        return FuncionarioResponseDTO.valueOf(repository.findByEmailSenha(email, senha));
+    }
 }

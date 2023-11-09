@@ -81,4 +81,9 @@ public class ClienteServiceImpl implements ClienteService{
         return repository.listAll().stream()
                 .map(c -> ClienteResponseDTO.valueOf(c)).toList();
     }
+
+    @Override
+    public ClienteResponseDTO findByEmailSenha(String email, String senha) {
+        return ClienteResponseDTO.valueOf(repository.findByEmailSenha(email, senha));
+    }
 }
