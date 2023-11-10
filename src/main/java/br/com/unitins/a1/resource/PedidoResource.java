@@ -2,6 +2,7 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.PedidoDTO;
 import br.com.unitins.a1.dto.StatusPedidoDTO;
+import br.com.unitins.a1.model.Cliente;
 import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.PedidoService;
 import jakarta.annotation.security.RolesAllowed;
@@ -9,35 +10,42 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 @Path("/pedido")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class PedidoResource {
     @Inject
+    JsonWebToken jwt;
+
+    @Inject
     PedidoService service;
 
     @POST
-    @Path("/criar/{id_cliente}")
-    public Response create(PedidoDTO dto, @PathParam("id_cliente") Long idCliente){
-        return Response.status(Response.Status.CREATED).entity(service.create(dto, idCliente)).build();
+    @Path("/")
+    @RolesAllowed(Cliente.ROLE)
+    public Response create(PedidoDTO dto){
+        return Response.status(Response.Status.CREATED).entity(service.create(dto, Long.valueOf(jwt.getSubject()))).build();
     }
 
     @PUT
-    @Path("/{id}")
-    public Response update(PedidoDTO dto, @PathParam("id") Long id){
-        return Response.status(Response.Status.ACCEPTED).entity(service.update(dto, id)).build();
+    @Path("/")
+    @RolesAllowed({Cliente.ROLE, NivelAcesso.Role.SUPERVISOR})
+    public Response update(PedidoDTO dto){
+        return Response.status(Response.Status.ACCEPTED).entity(service.update(dto, Long.valueOf(jwt.getSubject()))).build();
     }
 
     @PATCH
     @Path("/{id}")
-    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.ATENDENTE})
+    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.ATENDENTE, NivelAcesso.Role.ADMIN})
     public Response updateStatus(StatusPedidoDTO dto, @PathParam("id") Long id){
         return Response.status(Response.Status.ACCEPTED).entity(service.updateStatus(dto, id)).build();
     }
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({NivelAcesso.Role.ADMIN})
     public Response delete(@PathParam("id") Long id){
         service.delete(id);
         return Response.noContent().build();
@@ -45,14 +53,15 @@ public class PedidoResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response findById(@PathParam("id") Long id){
         return Response.ok().entity(service.findById(id)).build();
     }
 
     @GET
-    @Path("/busca/{id_cliente}")
-    public Response findByClienteId(@PathParam("id_cliente") Long idCliente){
-        return Response.ok().entity(service.findByClienteId(idCliente)).build();
+    @RolesAllowed(Cliente.ROLE)
+    public Response findByClienteId(){
+        return Response.ok().entity(service.findByClienteId(Long.valueOf(jwt.getSubject()))).build();
     }
 
 }

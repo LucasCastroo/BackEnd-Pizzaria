@@ -2,7 +2,9 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.BebidaDTO;
 import br.com.unitins.a1.dto.PizzaDTO;
+import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.ItemService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -17,32 +19,38 @@ public class ItemResource {
 
     @POST
     @Path("/pizza/")
+    @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response createPizza(PizzaDTO dto){
         return Response.status(Response.Status.CREATED).entity(itemService.createPizza(dto)).build();
     }
     @POST
     @Path("/bebida/")
+    @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response createBebida(BebidaDTO dto){
         return Response.status(Response.Status.CREATED).entity(itemService.createBebida(dto)).build();
     }
     @PUT
     @Path("/pizza/{id}")
+    @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response updatePizza(PizzaDTO dto, @PathParam("id") Long id){
         return Response.status(Response.Status.ACCEPTED).entity(itemService.updatePizza(dto, id)).build();
     }
     @PUT
     @Path("/bebida/{id}")
+    @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response updateBebida(BebidaDTO dto, @PathParam("id") Long id){
         return Response.status(Response.Status.ACCEPTED).entity(itemService.updateBebida(dto, id)).build();
     }
     @DELETE
     @Path("/pizza/{id}")
+    @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response updatePizza(@PathParam("id") Long id){
         itemService.deletePizza(id);
         return Response.noContent().build();
     }
     @DELETE
     @Path("/bebida/{id}")
+    @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response updateBebida(@PathParam("id") Long id){
         itemService.deleteBebida(id);
         return Response.noContent().build();
