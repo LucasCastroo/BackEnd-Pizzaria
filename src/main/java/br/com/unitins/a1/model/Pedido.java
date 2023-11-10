@@ -2,10 +2,16 @@ package br.com.unitins.a1.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Pedido extends DefaultEntity {
+    public Pedido(){
+        this.items = new ArrayList<>();
+        this.status = new ArrayList<>();
+    }
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
@@ -17,8 +23,6 @@ public class Pedido extends DefaultEntity {
     )
     @JoinColumn(name = "id_pedido")
     private List<ItemPedido> items;
-
-    private Double total;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cupom")
@@ -52,14 +56,6 @@ public class Pedido extends DefaultEntity {
 
     public void setItems(List<ItemPedido> items) {
         this.items = items;
-    }
-
-    public Double getTotal() {
-        return total;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
     }
 
     public Cupom getCupom() {

@@ -19,19 +19,15 @@ public record PedidoResponseDTO(
         ) {
 
     public static PedidoResponseDTO from(Pedido pedido){
-        try {
-            return new PedidoResponseDTO(
-                    pedido.getId(),
-                    ClienteResponseDTO.valueOf(pedido.getCliente()),
-                    pedido.getItems(),
-                    pedido.getFormaPagamento(),
-                    pedido.getCupom(),
-                    pedido.getTotal(),
-                    pedido.getStatus().stream().map(StatusPedidoResponseDTO::from).toList(),
-                    EnderecoResponseDTO.valueOf(pedido.getEndereco().getEndereco())
-            );
-        } catch (NullPointerException e) {
-            return null;
-        }
+        return new PedidoResponseDTO(
+                pedido.getId(),
+                ClienteResponseDTO.valueOf(pedido.getCliente()),
+                pedido.getItems(),
+                pedido.getFormaPagamento(),
+                pedido.getCupom(),
+                pedido.getItems().stream().map(i-> i.getPreco() * i.getQuant()).reduce(0.0, Double::sum) - (pedido.getCupom() != null ? pedido.getCupom().getDesconto()  : 0),
+                pedido.getStatus().stream().map(StatusPedidoResponseDTO::from).toList(),
+                EnderecoResponseDTO.valueOf(pedido.getEndereco().getEndereco())
+        );
     }
 }

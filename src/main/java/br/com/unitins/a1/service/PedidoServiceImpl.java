@@ -34,48 +34,10 @@ public class PedidoServiceImpl implements PedidoService{
     public PedidoResponseDTO create(PedidoDTO dto, Long idCliente) {
         Pedido pedido = new Pedido();
         pedido.setCliente(clienteRepository.findById(idCliente));
-        pedido.setCupom(cupomRepository.findByCodigo(dto.cupom()));
-        EnderecoPedido ep = new EnderecoPedido();
-        Endereco endereco = enderecoRepository.findById(dto.idEndereco());
-        ep.setBairro(endereco.getBairro());
-        ep.setEndereco(endereco);
-        ep.setLogradouro(endereco.getLogradouro());
-        ep.setCep(endereco.getCep());
-        ep.setCidade(endereco.getCidade());
-        pedido.setEndereco(ep);
-        if(pedido.getItems() != null) pedido.getItems().addAll(
-                dto.items().stream().map(i ->{
-                    ItemPedido itemPedido = new ItemPedido();
-                    itemPedido.setQuant(i.quantidade());
-                    switch (i.tipo()){
-                        case PIZZA -> {
-                            Pizza pizza = pizzaRepository.findById(i.idItem());
-                            itemPedido.setItem(pizza);
-                            itemPedido.setTamanho(pizza.getTamanhoPizza().name().toLowerCase());
-                        }
-                        case BEBIDA -> {
-                            Bebida bebida = bebidaRepository.findById(i.idItem());
-                            itemPedido.setItem(bebida);
-                            itemPedido.setTamanho(bebida.getMl().toString() + "ML");
-                        }
-                    }
-                    itemPedido.setPreco(itemPedido.getItem().getPreco());
-
-                    double total = itemPedido.getPreco() * itemPedido.getQuant();
-                    total = total - pedido.getCupom().getDesconto();
-                    pedido.setTotal(total);
-
-                    return itemPedido;
-                }).toList()
-        );
-        repository.persist(pedido);
-        return PedidoResponseDTO.from(pedido);
+        return setupPedido(dto, pedido);
     }
 
-    @Override
-    @Transactional
-    public PedidoResponseDTO update(PedidoDTO dto, Long id) {
-        Pedido pedido = repository.findById(id);
+    private PedidoResponseDTO setupPedido(PedidoDTO dto, Pedido pedido) {
         pedido.setCupom(cupomRepository.findByCodigo(dto.cupom()));
         EnderecoPedido ep = new EnderecoPedido();
         Endereco endereco = enderecoRepository.findById(dto.idEndereco());
@@ -105,8 +67,16 @@ public class PedidoServiceImpl implements PedidoService{
                     return itemPedido;
                 }).toList()
         );
+
         repository.persist(pedido);
         return PedidoResponseDTO.from(pedido);
+    }
+
+    @Override
+    @Transactional
+    public PedidoResponseDTO update(PedidoDTO dto, Long id) {
+        Pedido pedido = repository.findById(id);
+        return setupPedido(dto, pedido);
     }
 
     @Override

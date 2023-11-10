@@ -70,6 +70,7 @@ VALUES
     ('CARTAO', 4, 2, 4),
     ('DINHEIRO', 5, NULL, 5);
 
+
 INSERT INTO StatusPedido (horario, status, id_pedido)
 VALUES
     ('2023-10-01 10:16:00', 'AGUARDANDO_PAGAMENTO', 1),
@@ -88,3 +89,11 @@ VALUES
     ('2023-10-05 12:11:00', 'AGUARDANDO_PAGAMENTO', 5),
     ('2023-10-05 14:30:00', 'CANCELADO', 5);
 
+INSERT INTO ItemPedido (preco, quant, id_item, id_pedido, tamanho)
+VALUES (25.50, 2, 1, 1, 'MEDIA'),
+       (25.50, 1, 2, 2, '350ML'),
+       (25.50, 1, 3, 2, '1000ML'),
+       (25.50, 1, 4, 2, 'PEQUENA'),
+       (25.50, 4, 2, 3, '350ML'),
+       (25.50, 5, 3, 4, '1000ML'),
+       (25.50, 9, 4, 5, 'PEQUENA');
