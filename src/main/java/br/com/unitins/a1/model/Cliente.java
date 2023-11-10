@@ -6,6 +6,7 @@ import java.util.List;
 
 @Entity
 public class Cliente extends DefaultEntity {
+    public static final String ROLE = "CLIENTE";
     private String nome;
     private String cpf;
     private String email;

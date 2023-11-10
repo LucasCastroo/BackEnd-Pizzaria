@@ -28,7 +28,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         novoFuncionario.setNome(dto.getNome());
         novoFuncionario.setCpf(dto.getCpf());
         novoFuncionario.setEmail(dto.getEmail());
-        novoFuncionario.setSenha(dto.getSenha());
+        novoFuncionario.setSenha(hashService.getHash(dto.getSenha()));
         novoFuncionario.setNascimento(dto.getNascimento());
         novoFuncionario.setTipoAcesso(dto.getTipoAcesso());
 
@@ -45,7 +45,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             funcionario.setNome(dto.getNome());
             funcionario.setCpf(dto.getCpf());
             funcionario.setEmail(dto.getEmail());
-            funcionario.setSenha(dto.getSenha());
+            funcionario.setSenha(hashService.getHash(dto.getSenha()));
             funcionario.setNascimento(dto.getNascimento());
             funcionario.setTipoAcesso(dto.getTipoAcesso());
         } else {
@@ -70,7 +70,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public List<FuncionarioResponseDTO> findByNome(String nome) {
-        return repository.findByNome(nome).stream().map(n -> FuncionarioResponseDTO.valueOf(n)).toList();
+        return repository.findByNome(nome).stream().map(FuncionarioResponseDTO::valueOf).toList();
     }
 
     @Override

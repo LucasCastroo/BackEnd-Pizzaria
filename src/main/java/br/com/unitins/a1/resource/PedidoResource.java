@@ -2,7 +2,9 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.PedidoDTO;
 import br.com.unitins.a1.dto.StatusPedidoDTO;
+import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.PedidoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -29,6 +31,7 @@ public class PedidoResource {
 
     @PATCH
     @Path("/{id}")
+    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.ATENDENTE})
     public Response updateStatus(StatusPedidoDTO dto, @PathParam("id") Long id){
         return Response.status(Response.Status.ACCEPTED).entity(service.updateStatus(dto, id)).build();
     }

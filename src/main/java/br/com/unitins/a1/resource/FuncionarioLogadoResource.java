@@ -1,8 +1,8 @@
 package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.AlterarSenhaDTO;
+import br.com.unitins.a1.model.Funcionario;
 import br.com.unitins.a1.service.FuncionarioService;
-import br.com.unitins.a1.service.HashService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -14,7 +14,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 @Path("/meu-perfil")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@RolesAllowed({"FUNCIONARIO"})
+@RolesAllowed(Funcionario.ROLE)
 public class FuncionarioLogadoResource {
 
     @Inject
@@ -22,9 +22,6 @@ public class FuncionarioLogadoResource {
 
     @Inject
     FuncionarioService funcionarioService;
-
-    @Inject
-    HashService hashService;
 
     @GET
     public Response minhaConta() {
@@ -34,7 +31,6 @@ public class FuncionarioLogadoResource {
     @PATCH
     @Path("/alterar-senha")
     public Response alterarSenha(@Valid AlterarSenhaDTO dto) {
-        //TODO validação
         if(funcionarioService.alterarSenha(dto, Long.valueOf(jwt.getSubject()))){
             return Response.noContent().build();
         }

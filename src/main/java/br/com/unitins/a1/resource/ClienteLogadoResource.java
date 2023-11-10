@@ -1,6 +1,7 @@
 package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.AlterarSenhaDTO;
+import br.com.unitins.a1.model.Cliente;
 import br.com.unitins.a1.service.ClienteService;
 import br.com.unitins.a1.service.HashService;
 import jakarta.annotation.security.RolesAllowed;
@@ -14,7 +15,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 @Path("/minha-conta")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@RolesAllowed({"USER"})
+@RolesAllowed(Cliente.ROLE)
 public class ClienteLogadoResource {
     @Inject
     JsonWebToken jwt;

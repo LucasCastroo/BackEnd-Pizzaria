@@ -3,7 +3,9 @@ package br.com.unitins.a1.repository;
 import br.com.unitins.a1.model.Cliente;
 import br.com.unitins.a1.model.Funcionario;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
 
@@ -14,6 +16,11 @@ public class FuncionarioRepository implements PanacheRepository<Funcionario> {
     }
 
     public Funcionario findByEmailSenha(String email, String senha) {
-        return find("email = ?1 AND senha = ?2", email, senha).singleResult();
+        try {
+            return find("email = ?1 AND senha = ?2", email, senha).singleResult();
+        }catch (NoResultException e){
+            Log.error(e);
+            return null;
+        }
     }
 }

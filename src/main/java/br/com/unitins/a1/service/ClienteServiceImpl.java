@@ -31,7 +31,7 @@ public class ClienteServiceImpl implements ClienteService{
         novoCliente.setNome(dto.getNome());
         novoCliente.setCpf(dto.getCpf());
         novoCliente.setEmail(dto.getEmail());
-        novoCliente.setSenha(dto.getSenha());
+        novoCliente.setSenha(hashService.getHash(dto.getSenha()));
         novoCliente.setNascimento(dto.getNascimento());
         novoCliente.setTelefone(dto.getTelefone());
         if(dto.getEnderecos() != null) novoCliente.setEnderecos(dto.getEnderecos().stream().map(e -> new Endereco(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList());
@@ -50,7 +50,7 @@ public class ClienteServiceImpl implements ClienteService{
             cliente.setNome(dto.getNome());
             cliente.setCpf(dto.getCpf());
             cliente.setEmail(dto.getEmail());
-            cliente.setSenha(dto.getSenha());
+            cliente.setSenha(hashService.getHash(dto.getSenha()));
             cliente.setNascimento(dto.getNascimento());
             cliente.setTelefone(dto.getTelefone());
             cliente.getEnderecos().clear();
@@ -77,13 +77,13 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     public List<ClienteResponseDTO> findByNome(String nome) {
-        return repository.findByNome(nome).stream().map(n -> ClienteResponseDTO.valueOf(n)).toList();
+        return repository.findByNome(nome).stream().map(ClienteResponseDTO::valueOf).toList();
     }
 
     @Override
     public List<ClienteResponseDTO> findByAll() {
         return repository.listAll().stream()
-                .map(c -> ClienteResponseDTO.valueOf(c)).toList();
+                .map(ClienteResponseDTO::valueOf).toList();
     }
 
     @Override

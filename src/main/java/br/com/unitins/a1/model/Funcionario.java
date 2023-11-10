@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 
 @Entity
 public class Funcionario extends DefaultEntity {
+    public static final String ROLE = "FUNCIONARIO";
     private String nome;
     @Column(length = 14)
     private String cpf;
