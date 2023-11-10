@@ -62,13 +62,13 @@ VALUES (1, 'Centro', '12345-678', 'Cidade A', 'Rua Principal, 123'),
        (4, 'Bairro 3', '13579-246', 'Cidade D', 'Rua das Flores, 101'),
        (5, 'Bairro 4', '87654-321', 'Cidade E', 'Avenida das Árvores, 222');
 
-INSERT INTO Pedido (formaPagamento, total, id_cliente, id_cupom, id_endereco)
+INSERT INTO Pedido (formaPagamento, id_cliente, id_cupom, id_endereco)
 VALUES
-    ('CARTAO', 50.00, 1, 1, 1),
-    ('DINHEIRO', 35.00, 2, NULL, 2),
-    ('PIX', 42.50, 3, NULL, 3),
-    ('CARTAO', 60.00, 4, 2, 4),
-    ('DINHEIRO', 27.50, 5, NULL, 5);
+    ('CARTAO', 1, 1, 1),
+    ('DINHEIRO', 2, NULL, 2),
+    ('PIX', 3, NULL, 3),
+    ('CARTAO', 4, 2, 4),
+    ('DINHEIRO', 5, NULL, 5);
 
 INSERT INTO StatusPedido (horario, status, id_pedido)
 VALUES

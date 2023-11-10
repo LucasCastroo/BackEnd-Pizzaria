@@ -60,6 +60,11 @@ public class PedidoServiceImpl implements PedidoService{
                         }
                     }
                     itemPedido.setPreco(itemPedido.getItem().getPreco());
+
+                    double total = itemPedido.getPreco() * itemPedido.getQuant();
+                    total = total - pedido.getCupom().getDesconto();
+                    pedido.setTotal(total);
+
                     return itemPedido;
                 }).toList()
         );
