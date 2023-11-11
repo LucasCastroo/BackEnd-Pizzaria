@@ -6,6 +6,7 @@ import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.model.Pizza;
 import br.com.unitins.a1.model.TamanhoPizza;
 import br.com.unitins.a1.service.ItemService;
+import br.com.unitins.a1.service.JwtService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
@@ -20,8 +21,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @QuarkusTest
 class ItemResourceTest {
 
+
+
+
     @Inject
     ItemService itemService;
+
+    @Inject
+    JwtService jwtService;
+
+
 
     @Test
     void createPizza() {
@@ -37,6 +46,7 @@ class ItemResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
+                .header(TestUtils.authFuncionario)
                 .body(dto)
                 .when().post("/item/pizza")
                 .then()
@@ -63,6 +73,7 @@ class ItemResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
+                .header(TestUtils.authFuncionario)
                 .body(dto)
                 .when().post("/item/bebida")
                 .then()
@@ -103,6 +114,7 @@ class ItemResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
+                .header(TestUtils.authFuncionario)
                 .body(dtoUpdate)
                 .when().put("/item/pizza/"+ id)
                 .then()
@@ -140,6 +152,7 @@ class ItemResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
+                .header(TestUtils.authFuncionario)
                 .body(dtoUpdate)
                 .when().put("/item/bebida/"+ id)
                 .then()
@@ -169,7 +182,9 @@ class ItemResourceTest {
         Pizza pizzaTest = itemService.createPizza(dto);
 
         given()
-                .when().get("/item/pizza/" + pizzaTest.getId())
+                .when()
+                .header(TestUtils.authFuncionario)
+                .get("/item/pizza/" + pizzaTest.getId())
                 .then()
                 .statusCode(200);
     }
