@@ -2,6 +2,8 @@ package br.com.unitins.a1.service;
 
 import br.com.unitins.a1.dto.ClienteResponseDTO;
 import br.com.unitins.a1.dto.FuncionarioResponseDTO;
+import br.com.unitins.a1.model.Cliente;
+import br.com.unitins.a1.model.Funcionario;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -19,7 +21,7 @@ public class JwtServiceImpl implements JwtService{
         return Jwt.issuer("pizzaria-jwt")
                 .subject(String.valueOf(usuario.id()))
                 .upn(usuario.email())
-                .groups(Set.of("USER"))
+                .groups(Set.of(Cliente.ROLE))
                 .expiresAt(getExpiration())
                 .sign();
     }
@@ -29,7 +31,7 @@ public class JwtServiceImpl implements JwtService{
         return Jwt.issuer("pizzaria-jwt")
                 .subject(String.valueOf(usuario.id()))
                 .upn(usuario.email())
-                .groups(Set.of("FUNCIONARIO", usuario.tipoAcesso().name()))
+                .groups(Set.of(Funcionario.ROLE, usuario.tipoAcesso().name()))
                 .expiresAt(getExpiration())
                 .sign();
     }
