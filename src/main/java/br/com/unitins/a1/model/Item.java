@@ -11,6 +11,7 @@ public abstract class Item extends DefaultEntity {
     private String descricao;
     private Double preco;
     private Integer kCal;
+    private String nomeImagem;
 
     public String getNome() {
         return nome;
@@ -42,5 +43,13 @@ public abstract class Item extends DefaultEntity {
 
     public void setkCal(Integer kCal) {
         this.kCal = kCal;
+    }
+
+    public String getNomeImagem() {
+        return nomeImagem;
+    }
+
+    public void setNomeImagem(String nomeImagem) {
+        this.nomeImagem = nomeImagem;
     }
 }

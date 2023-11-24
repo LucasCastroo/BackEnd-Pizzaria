@@ -3,6 +3,7 @@ package br.com.unitins.a1.resource;
 import br.com.unitins.a1.dto.BebidaDTO;
 import br.com.unitins.a1.dto.PizzaDTO;
 import br.com.unitins.a1.model.NivelAcesso;
+import br.com.unitins.a1.service.ItemFileService;
 import br.com.unitins.a1.service.ItemService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;

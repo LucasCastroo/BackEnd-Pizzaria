@@ -3,6 +3,7 @@ package br.com.unitins.a1.service;
 import br.com.unitins.a1.dto.BebidaDTO;
 import br.com.unitins.a1.dto.PizzaDTO;
 import br.com.unitins.a1.model.Bebida;
+import br.com.unitins.a1.model.Item;
 import br.com.unitins.a1.model.Pizza;
 
 public interface ItemService {
@@ -10,6 +11,7 @@ public interface ItemService {
     Bebida createBebida(BebidaDTO dto);
     Pizza updatePizza(PizzaDTO dto, Long id);
     Bebida updateBebida(BebidaDTO dto, Long id);
+    Item updateNomeImagem(Long id, String nomeImagem) ;
     void deletePizza(Long id);
     void deleteBebida(Long id);
     Pizza findPizza(Long id);

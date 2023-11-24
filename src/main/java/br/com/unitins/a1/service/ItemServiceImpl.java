@@ -3,6 +3,7 @@ package br.com.unitins.a1.service;
 import br.com.unitins.a1.dto.BebidaDTO;
 import br.com.unitins.a1.dto.PizzaDTO;
 import br.com.unitins.a1.model.Bebida;
+import br.com.unitins.a1.model.Item;
 import br.com.unitins.a1.model.Pizza;
 import br.com.unitins.a1.repository.BebidaRepository;
 import br.com.unitins.a1.repository.PizzaRepository;
@@ -58,6 +59,13 @@ public class ItemServiceImpl implements ItemService{
         if(dto.preco() != null) bebida.setPreco(dto.preco());
         if(dto.ml() != null) bebida.setMl(dto.ml());
         return bebida;
+    }
+
+    @Override
+    @Transactional
+    public Item updateNomeImagem(Long id, String nomeImagem) {
+        Item item;
+        return null;
     }
 
     @Transactional
