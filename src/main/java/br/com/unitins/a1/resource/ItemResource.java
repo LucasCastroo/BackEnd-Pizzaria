@@ -2,6 +2,7 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.BebidaDTO;
 import br.com.unitins.a1.dto.PizzaDTO;
+import br.com.unitins.a1.form.ItemImageForm;
 import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.ItemFileService;
 import br.com.unitins.a1.service.ItemService;
@@ -10,6 +11,11 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
+import jakarta.ws.rs.core.Response.Status;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+
+import java.io.IOException;
 
 @Path("/item")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -17,6 +23,9 @@ import jakarta.ws.rs.core.Response;
 public class ItemResource {
     @Inject
     ItemService itemService;
+
+    @Inject
+    ItemFileService fileService;
 
     @POST
     @Path("/pizza/")
@@ -69,5 +78,34 @@ public class ItemResource {
         return Response.ok().entity(itemService.findBebida(id)).build();
     }
 
+//    @PATCH
+//    @Path("/upload/imagem")
+//    @RolesAllowed({ "User", "Admin" })
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    public Response salvarImagem(@MultipartForm ItemImageForm form) {
+//        String nomeImagem;
+//        try {
+//            nomeImagem = fileService.salvar(form.getNomeImagem(), form.getImagem());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Error error = new Error("409", e.getMessage());
+//            return Response.status(Response.Status.CONFLICT).entity(error).build();
+//        }
+//
+//        String login = jwt.getSubject();
+//        UsuarioResponseDTO usuarioDTO = usuarioService.findByLogin(login);
+//        usuarioDTO = usuarioService.updateNomeImagem(usuarioDTO.id(), nomeImagem);
+//
+//        return Response.ok(usuarioDTO).build();
+//    }
 
+    @GET
+    @Path("/download/imagem/{nomeImagem}")
+    @RolesAllowed({ "User", "Admin" })
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response download(@PathParam("nomeImagem") String nomeImagem) {
+        ResponseBuilder response = Response.ok(fileService.obter(nomeImagem));
+        response.header("Content-Disposition", "attachment;filename="+nomeImagem);
+        return response.build();
+    }
 }

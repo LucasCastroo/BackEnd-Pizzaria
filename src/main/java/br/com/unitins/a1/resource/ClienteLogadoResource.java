@@ -49,34 +49,4 @@ public class ClienteLogadoResource {
         return Response.serverError().build();
     }
 
-    @PATCH
-    @Path("/upload/imagem")
-    @RolesAllowed({ "User", "Admin" })
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response salvarImagem(@MultipartForm ItemImageForm form) {
-        String nomeImagem;
-        try {
-            nomeImagem = fileService.salvar(form.getNomeImagem(), form.getImagem());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Error error = new Error("409", e.getMessage());
-            return Response.status(Response.Status.CONFLICT).entity(error).build();
-        }
-
-        String login = jwt.getSubject();
-        UsuarioResponseDTO usuarioDTO = usuarioService.findByLogin(login);
-        usuarioDTO = usuarioService.updateNomeImagem(usuarioDTO.id(), nomeImagem);
-
-        return Response.ok(usuarioDTO).build();
-    }
-
-    @GET
-    @Path("/download/imagem/{nomeImagem}")
-    @RolesAllowed({ "User", "Admin" })
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response download(@PathParam("nomeImagem") String nomeImagem) {
-        ResponseBuilder response = Response.ok(fileService.obter(nomeImagem));
-        response.header("Content-Disposition", "attachment;filename="+nomeImagem);
-        return response.build();
-    }
 }
