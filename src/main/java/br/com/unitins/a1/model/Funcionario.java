@@ -1,73 +1,26 @@
 package br.com.unitins.a1.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @Entity
-public class Funcionario extends DefaultEntity {
+public class Funcionario extends Usuario {
     public static final String ROLE = "FUNCIONARIO";
-    private String nome;
-    @Column(length = 14)
-    private String cpf;
-    private String email;
-    private String senha;
-    private String nascimento;
     @Enumerated(EnumType.STRING)
     private NivelAcesso tipoAcesso;
 
     public Funcionario(String nome, String cpf, String email, String senha, String nascimento, NivelAcesso tipoAcesso) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.email = email;
-        this.senha = senha;
-        this.nascimento = nascimento;
+        this.setNome(nome);
+        this.setCpf(cpf);
+        this.setEmail(email);
+        this.setSenha(senha);
+        this.setNascimento(nascimento);
         this.tipoAcesso = tipoAcesso;
     }
 
     public Funcionario() {
 
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getNascimento() {
-        return nascimento;
-    }
-
-    public void setNascimento(String nascimento) {
-        this.nascimento = nascimento;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public NivelAcesso getTipoAcesso() {
