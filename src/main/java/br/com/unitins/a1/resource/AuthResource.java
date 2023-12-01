@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.logging.Logger;
 
 @Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -26,21 +27,41 @@ public class AuthResource {
     @Inject
     JwtService jwtService;
 
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+
     @POST
     @Path("/cliente")
     public Response loginCliente(@Valid LoginDTO dto){
-        String hashed = hashService.getHash(dto.senha());
-        ClienteResponseDTO usuario = clienteService.findByEmailSenha(dto.email(), hashed);
-        String token = jwtService.generateJwt(usuario);
-        return Response.ok().header("Authorization", token).build();
+        try {
+            String hashed = hashService.getHash(dto.senha());
+            ClienteResponseDTO cliente = clienteService.findByEmailSenha(dto.email(), hashed);
+            if (cliente == null) {
+                LOG.info("Login mal sucedido!");
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Credenciais inválidas").build();
+            }
+            String token = jwtService.generateJwt(cliente);
+            LOG.info("Login feito com sucesso!");
+            return Response.ok().header("Authorization", token).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro interno do servidor").build();
+        }
     }
 
     @POST
     @Path("/funcionario")
     public Response loginFuncionario(@Valid LoginDTO dto){
-        String hashed = hashService.getHash(dto.senha());
-        FuncionarioResponseDTO usuario = funcionarioService.findByEmailSenha(dto.email(), hashed);
-        String token = jwtService.generateJwt(usuario);
-        return Response.ok().header("Authorization", token).build();
+        try {
+            String hashed = hashService.getHash(dto.senha());
+            FuncionarioResponseDTO funcionario = funcionarioService.findByEmailSenha(dto.email(), hashed);
+                if (funcionario == null) {
+                LOG.info("Login mal sucedido!");
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Credenciais inválidas").build();
+            }
+            String token = jwtService.generateJwt(funcionario);
+            LOG.info("Login feito com sucesso!");
+            return Response.ok().header("Authorization", token).build();
+        }catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro interno do servidor").build();
+        }
     }
 }
