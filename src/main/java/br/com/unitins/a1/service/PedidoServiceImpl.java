@@ -10,7 +10,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
@@ -38,38 +37,56 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     private PedidoResponseDTO setupPedido(PedidoDTO dto, Pedido pedido) {
-        pedido.setCupom(cupomRepository.findByCodigo(dto.cupom()));
-        EnderecoPedido ep = new EnderecoPedido();
-        Endereco endereco = enderecoRepository.findById(dto.idEndereco());
-        ep.setBairro(endereco.getBairro());
-        ep.setEndereco(endereco);
-        ep.setLogradouro(endereco.getLogradouro());
-        ep.setCep(endereco.getCep());
-        ep.setCidade(endereco.getCidade());
-        pedido.setEndereco(ep);
-        pedido.getItems().addAll(
-                dto.items().stream().map(i ->{
-                    ItemPedido itemPedido = new ItemPedido();
-                    itemPedido.setQuant(i.quantidade());
-                    switch (i.tipo()){
-                        case PIZZA -> {
-                            Pizza pizza = pizzaRepository.findById(i.idItem());
-                            itemPedido.setItem(pizza);
-                            itemPedido.setTamanho(pizza.getTamanhoPizza().name().toLowerCase());
-                        }
-                        case BEBIDA -> {
-                            Bebida bebida = bebidaRepository.findById(i.idItem());
-                            itemPedido.setItem(bebida);
-                            itemPedido.setTamanho(bebida.getMl().toString() + "ML");
-                        }
-                    }
-                    itemPedido.setPreco(itemPedido.getItem().getPreco());
-                    return itemPedido;
-                }).toList()
-        );
+        try {
+            pedido.setCupom(cupomRepository.findByCodigo(dto.cupom()));
+            EnderecoPedido ep = new EnderecoPedido();
+            Endereco endereco = enderecoRepository.findById(dto.idEndereco());
 
-        repository.persist(pedido);
-        return PedidoResponseDTO.from(pedido);
+            if (endereco == null) {
+                throw new RuntimeException("Endereço não encontrado para o ID fornecido: " + dto.idEndereco());
+            }
+
+            ep.setBairro(endereco.getBairro());
+            ep.setEndereco(endereco);
+            ep.setLogradouro(endereco.getLogradouro());
+            ep.setCep(endereco.getCep());
+            ep.setCidade(endereco.getCidade());
+            pedido.setEndereco(ep);
+            pedido.getItems().addAll(
+                    dto.items().stream().map(i -> {
+                        ItemPedido itemPedido = new ItemPedido();
+                        itemPedido.setQuant(i.quantidade());
+                        switch (i.tipo()) {
+                            case PIZZA -> {
+                                Pizza pizza = pizzaRepository.findById(i.idItem());
+
+                                if (pizza == null) {
+                                    throw new RuntimeException("Pizza não encontrada para o ID fornecido: " + i.idItem());
+                                }
+
+                                itemPedido.setItem(pizza);
+                                itemPedido.setTamanho(pizza.getTamanhoPizza().name().toLowerCase());
+                            }
+                            case BEBIDA -> {
+                                Bebida bebida = bebidaRepository.findById(i.idItem());
+
+                                if (bebida == null) {
+                                    throw new RuntimeException("Bebida não encontrada para o ID fornecido: " + i.idItem());
+                                }
+
+                                itemPedido.setItem(bebida);
+                                itemPedido.setTamanho(bebida.getMl().toString() + "ML");
+                            }
+                        }
+                        itemPedido.setPreco(itemPedido.getItem().getPreco());
+                        return itemPedido;
+                    }).toList()
+            );
+            repository.persist(pedido);
+            return PedidoResponseDTO.from(pedido);
+        } catch (Exception e) {
+            throw new RuntimeException("Ocorreu um erro ao realizar o pedido."+e);
+        }
     }
 
     @Override
