@@ -1,6 +1,8 @@
 package br.com.unitins.a1.dto;
 
 import br.com.unitins.a1.model.Cliente;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public record ClienteResponseDTO(
@@ -9,7 +11,7 @@ public record ClienteResponseDTO(
         String cpf,
         String email,
         String telefone,
-        String nascimento,
+        LocalDate nascimento,
         List<EnderecoDTO> enderecos
 ) {
     public static ClienteResponseDTO valueOf(Cliente cliente) {

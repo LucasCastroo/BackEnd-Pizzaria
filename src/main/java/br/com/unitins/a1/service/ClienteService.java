@@ -1,8 +1,8 @@
 package br.com.unitins.a1.service;
 
-import br.com.unitins.a1.dto.AlterarSenhaDTO;
 import br.com.unitins.a1.dto.ClienteDTO;
 import br.com.unitins.a1.dto.ClienteResponseDTO;
+import br.com.unitins.a1.dto.TelefoneDTO;
 
 import java.util.List;
 
@@ -14,5 +14,7 @@ public interface ClienteService {
     public List<ClienteResponseDTO> findByNome(String nome);
     public List<ClienteResponseDTO> findByAll();
     public ClienteResponseDTO findByEmailSenha(String email, String senha);
-    public Boolean alterarSenha(AlterarSenhaDTO dto, Long id);
+
+    public ClienteResponseDTO alterarTelefone(TelefoneDTO telefone, Long id);
+
 }

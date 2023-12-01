@@ -1,8 +1,6 @@
 package br.com.unitins.a1.service;
 
-import br.com.unitins.a1.dto.AlterarSenhaDTO;
-import br.com.unitins.a1.dto.ClienteDTO;
-import br.com.unitins.a1.dto.ClienteResponseDTO;
+import br.com.unitins.a1.dto.*;
 import br.com.unitins.a1.model.Cliente;
 import br.com.unitins.a1.model.Endereco;
 import br.com.unitins.a1.repository.ClienteRepository;
@@ -15,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
-public class ClienteServiceImpl implements ClienteService{
+public class ClienteServiceImpl implements ClienteService, UsuarioService<ClienteResponseDTO> {
 
     @Inject
     ClienteRepository repository;
@@ -55,6 +53,7 @@ public class ClienteServiceImpl implements ClienteService{
             cliente.setTelefone(dto.getTelefone());
             cliente.getEnderecos().clear();
             cliente.getEnderecos().addAll(dto.getEnderecos().stream().map(e -> new Endereco(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getCep())).toList());
+            repository.persistAndFlush(cliente);
         } else {
             throw new NotFoundException();
         }
@@ -98,10 +97,55 @@ public class ClienteServiceImpl implements ClienteService{
         if(cliente != null){
             if(hashService.getHash(dto.antigaSenha()).equals(cliente.getSenha())){
                 cliente.setSenha(hashService.getHash(dto.novaSenha()));
-                repository.persist(cliente);
+                repository.persistAndFlush(cliente);
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    @Transactional
+    public ClienteResponseDTO alterarNome(NomeDTO nome, Long id) {
+        Cliente cliente = repository.findById(id);
+        cliente.setNome(nome.nome());
+        repository.persistAndFlush(cliente);
+        return ClienteResponseDTO.valueOf(cliente);
+    }
+
+    @Override
+    @Transactional
+    public ClienteResponseDTO alterarCpf(CPFDTO cpf, Long id) {
+        Cliente cliente = repository.findById(id);
+        cliente.setCpf(cpf.cpf());
+        repository.persistAndFlush(cliente);
+        return ClienteResponseDTO.valueOf(cliente);
+    }
+
+    @Override
+    @Transactional
+    public ClienteResponseDTO alterarEmail(EmailDTO email, Long id) {
+        Cliente cliente = repository.findById(id);
+        cliente.setEmail(email.email());
+        repository.persistAndFlush(cliente);
+        return ClienteResponseDTO.valueOf(cliente);
+    }
+
+    @Override
+    @Transactional
+    public ClienteResponseDTO alterarNascimento(NascimentoDTO nascimento, Long id) {
+        Cliente cliente = repository.findById(id);
+        cliente.setNascimento(nascimento.nascimento());
+        repository.persistAndFlush(cliente);
+        return ClienteResponseDTO.valueOf(cliente);
+    }
+
+    @Override
+    @Transactional
+    public ClienteResponseDTO alterarTelefone(TelefoneDTO telefone, Long id) {
+        Cliente cliente = repository.findById(id);
+        cliente.setTelefone(telefone.telefone());
+        repository.persistAndFlush(cliente);
+        return ClienteResponseDTO.valueOf(cliente);
     }
 }

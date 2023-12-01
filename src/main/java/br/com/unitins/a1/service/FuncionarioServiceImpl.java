@@ -1,8 +1,6 @@
 package br.com.unitins.a1.service;
 
-import br.com.unitins.a1.dto.AlterarSenhaDTO;
-import br.com.unitins.a1.dto.FuncionarioDTO;
-import br.com.unitins.a1.dto.FuncionarioResponseDTO;
+import br.com.unitins.a1.dto.*;
 import br.com.unitins.a1.model.Funcionario;
 import br.com.unitins.a1.repository.FuncionarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,7 +10,7 @@ import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
 @ApplicationScoped
-public class FuncionarioServiceImpl implements FuncionarioService {
+public class FuncionarioServiceImpl implements FuncionarioService, UsuarioService<FuncionarioResponseDTO> {
 
     @Inject
     FuncionarioRepository repository;
@@ -79,15 +77,52 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
+    @Transactional
     public Boolean alterarSenha(AlterarSenhaDTO dto, Long id) {
         Funcionario funcionario = repository.findById(id);
         if(funcionario != null){
             if(hashService.getHash(dto.antigaSenha()).equals(funcionario.getSenha())){
                 funcionario.setSenha(hashService.getHash(dto.novaSenha()));
-                repository.persist(funcionario);
+                repository.persistAndFlush(funcionario);
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    @Transactional
+    public FuncionarioResponseDTO alterarNome(NomeDTO nome, Long id) {
+        Funcionario funcionario = repository.findById(id);
+        funcionario.setNome(nome.nome());
+        repository.persistAndFlush(funcionario);
+        return FuncionarioResponseDTO.valueOf(funcionario);
+    }
+
+    @Override
+    @Transactional
+    public FuncionarioResponseDTO alterarCpf(CPFDTO cpf, Long id) {
+        Funcionario funcionario = repository.findById(id);
+        funcionario.setCpf(cpf.cpf());
+        repository.persistAndFlush(funcionario);
+        return FuncionarioResponseDTO.valueOf(funcionario);
+    }
+
+    @Override
+    @Transactional
+    public FuncionarioResponseDTO alterarEmail(EmailDTO email, Long id) {
+        Funcionario funcionario = repository.findById(id);
+        funcionario.setEmail(email.email());
+        repository.persistAndFlush(funcionario);
+        return FuncionarioResponseDTO.valueOf(funcionario);
+    }
+
+    @Override
+    @Transactional
+    public FuncionarioResponseDTO alterarNascimento(NascimentoDTO nascimento, Long id) {
+        Funcionario funcionario = repository.findById(id);
+        funcionario.setNascimento(nascimento.nascimento());
+        repository.persistAndFlush(funcionario);
+        return FuncionarioResponseDTO.valueOf(funcionario);
     }
 }

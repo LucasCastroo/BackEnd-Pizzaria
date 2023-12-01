@@ -1,18 +1,17 @@
 package br.com.unitins.a1.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import org.hibernate.validator.constraints.br.CPF;
+
+import java.time.LocalDate;
 
 @MappedSuperclass
 public abstract class Usuario extends DefaultEntity {
     private String nome;
-    @Column(length = 14)
-    @CPF
+
     private String cpf;
     private String email;
     private String senha;
-    private String nascimento;
+    private LocalDate nascimento;
 
     public String getNome() {
         return nome;
@@ -46,11 +45,11 @@ public abstract class Usuario extends DefaultEntity {
         this.senha = senha;
     }
 
-    public String getNascimento() {
+    public LocalDate getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(String nascimento) {
+    public void setNascimento(LocalDate nascimento) {
         this.nascimento = nascimento;
     }
 }
