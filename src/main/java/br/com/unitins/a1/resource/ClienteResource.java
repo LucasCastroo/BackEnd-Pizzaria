@@ -2,7 +2,10 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.ClienteDTO;
 import br.com.unitins.a1.dto.ClienteResponseDTO;
+import br.com.unitins.a1.model.Cliente;
+import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.ClienteService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -28,6 +31,7 @@ public class ClienteResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({Cliente.ROLE})
     public Response update(ClienteDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
         LOG.info("Informações de cliente atualizadas!");
@@ -36,6 +40,7 @@ public class ClienteResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({Cliente.ROLE, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         LOG.info("Cliente deletado!");
@@ -43,6 +48,7 @@ public class ClienteResource {
     }
 
     @GET
+    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findAll() {
         LOG.info("Busca de todos os clientes!");
         return Response.ok(service.findByAll()).build();
@@ -50,6 +56,7 @@ public class ClienteResource {
 
     @GET
     @Path("/search/id/{id}")
+    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findById(@PathParam("id") Long id) {
         LOG.info("Busca de um cliente por ID!");
         return Response.ok(service.findById(id)).build();
@@ -57,6 +64,7 @@ public class ClienteResource {
 
     @GET
     @Path("/search/nome/{nome}")
+    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findByNome(@PathParam("nome") String nome) {
         LOG.info("Busca de um cliente por NOME!");
         return Response.ok(service.findByNome(nome)).build();

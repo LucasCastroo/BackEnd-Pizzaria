@@ -2,7 +2,10 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.FuncionarioDTO;
 import br.com.unitins.a1.dto.FuncionarioResponseDTO;
+import br.com.unitins.a1.model.Funcionario;
+import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.FuncionarioService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -23,6 +26,7 @@ public class FuncionarioResource {
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @POST
+    @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response insert(@Valid FuncionarioDTO dto) {
         FuncionarioResponseDTO retorno = service.insert(dto);
         LOG.info("Novo funcionario cadastrado!");
@@ -31,6 +35,7 @@ public class FuncionarioResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({Funcionario.ROLE})
     @Transactional
     public Response update(FuncionarioDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
@@ -40,6 +45,7 @@ public class FuncionarioResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({Funcionario.ROLE, NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         LOG.info("Funcionario deletado!");
@@ -48,6 +54,7 @@ public class FuncionarioResource {
 
     @GET
     @Path("/search/id/{id}")
+    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findById(@PathParam("id") Long id) {
         LOG.info("Busca de um funcionario por ID!");
         return Response.ok(service.findById(id)).build();
@@ -55,6 +62,7 @@ public class FuncionarioResource {
 
     @GET
     @Path("/search/nome/{nome}")
+    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findByNome(@PathParam("nome") String nome) {
         LOG.info("Busca de um cliente por NOME!");
         return Response.ok(service.findByNome(nome)).build();

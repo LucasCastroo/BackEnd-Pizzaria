@@ -2,7 +2,9 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.CupomDTO;
 import br.com.unitins.a1.dto.CupomResponseDTO;
+import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.CupomService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -20,6 +22,7 @@ public class CupomResource {
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @POST
+    @RolesAllowed({NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response create(@Valid CupomDTO dto){
         LOG.info("Novo cupom adicionado!");
         return Response.status(Response.Status.CREATED).entity(service.create(dto)).build();
@@ -27,6 +30,7 @@ public class CupomResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response update(CupomDTO dto, @PathParam("id") Long id){
         service.update(dto, id);
         LOG.info("Cupom atualizado!");
@@ -35,6 +39,7 @@ public class CupomResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response delete(@PathParam("id") Long id){
         service.delete(id);
         LOG.info("Cupom deletado!");
@@ -43,6 +48,7 @@ public class CupomResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findById(@PathParam("id") Long id){
         LOG.info("Busca de cupom por ID!");
         return Response.ok().entity(service.findById(id)).build();
@@ -50,6 +56,7 @@ public class CupomResource {
 
     @GET
     @Path("/busca/{codigo}")
+    @RolesAllowed({NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findByCodigo(@PathParam("codigo") String codigo){
         CupomResponseDTO cupom = service.findByCodigo(codigo);
         if(cupom != null) {

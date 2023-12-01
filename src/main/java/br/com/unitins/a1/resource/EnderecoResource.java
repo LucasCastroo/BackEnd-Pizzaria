@@ -2,7 +2,10 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.EnderecoDTO;
 import br.com.unitins.a1.dto.EnderecoResponseDTO;
+import br.com.unitins.a1.model.Cliente;
+import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.EnderecoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -21,6 +24,7 @@ public class EnderecoResource {
 
     @POST
     @Path("/criar/{idCliente}")
+    @RolesAllowed({Cliente.ROLE})
     public Response insert(@Valid EnderecoDTO dto, @PathParam("idCliente") Long idCliente) {
         EnderecoResponseDTO retorno = service.insert(dto, idCliente);
         LOG.info("Novo endereço adicionado!");
@@ -29,6 +33,7 @@ public class EnderecoResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({Cliente.ROLE})
     public Response update(EnderecoDTO dto, @PathParam("id") Long idEndereco) {
         service.update(dto, idEndereco);
         LOG.info("Endereço atualizado!");
@@ -37,6 +42,7 @@ public class EnderecoResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({Cliente.ROLE})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         LOG.info("Endereço deletado!");
@@ -45,6 +51,7 @@ public class EnderecoResource {
 
     @GET
     @Path("/search/id/{id}")
+    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response findById(@PathParam("id") Long id) {
         LOG.info("Busca de endereço por ID!");
         return Response.ok(service.findById(id)).build();
@@ -52,6 +59,7 @@ public class EnderecoResource {
 
     @GET
     @Path("/search/logradouro/{logradouro}")
+    @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response findByNome(@PathParam("logradouro") String logradouro) {
         LOG.info("Busca de endereço por LOGRADOURO!");
         return Response.ok(service.findByLogradouro(logradouro)).build();
