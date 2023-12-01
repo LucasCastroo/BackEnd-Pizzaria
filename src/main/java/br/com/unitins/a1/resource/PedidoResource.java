@@ -10,14 +10,15 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.jwt.Claim;
 
 @Path("/pedido")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class PedidoResource {
     @Inject
-    JsonWebToken jwt;
+    @Claim("sub")
+    Long idUsuario;
 
     @Inject
     PedidoService service;
@@ -26,14 +27,14 @@ public class PedidoResource {
     @Path("/")
     @RolesAllowed(Cliente.ROLE)
     public Response create(PedidoDTO dto){
-        return Response.status(Response.Status.CREATED).entity(service.create(dto, Long.valueOf(jwt.getSubject()))).build();
+        return Response.status(Response.Status.CREATED).entity(service.create(dto, idUsuario)).build();
     }
 
     @PUT
     @Path("/")
     @RolesAllowed({Cliente.ROLE, NivelAcesso.Role.SUPERVISOR})
     public Response update(PedidoDTO dto){
-        return Response.status(Response.Status.ACCEPTED).entity(service.update(dto, Long.valueOf(jwt.getSubject()))).build();
+        return Response.status(Response.Status.ACCEPTED).entity(service.update(dto, idUsuario)).build();
     }
 
     @PATCH
@@ -61,7 +62,7 @@ public class PedidoResource {
     @GET
     @RolesAllowed(Cliente.ROLE)
     public Response findByClienteId(){
-        return Response.ok().entity(service.findByClienteId(Long.valueOf(jwt.getSubject()))).build();
+        return Response.ok().entity(service.findByClienteId(idUsuario)).build();
     }
 
 }

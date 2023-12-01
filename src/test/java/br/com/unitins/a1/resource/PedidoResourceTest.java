@@ -8,15 +8,16 @@ import br.com.unitins.a1.service.ClienteService;
 import br.com.unitins.a1.service.ItemService;
 import br.com.unitins.a1.service.PedidoService;
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
+import io.quarkus.test.security.TestSecurity;
+import io.quarkus.test.security.jwt.Claim;
+import io.quarkus.test.security.jwt.ClaimType;
+import io.quarkus.test.security.jwt.JwtSecurity;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 class PedidoResourceTest {
@@ -75,6 +76,7 @@ class PedidoResourceTest {
 
     @Test
     void delete() {
+
     }
 
     @Test
@@ -82,6 +84,17 @@ class PedidoResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "cliente1", roles = {"CLIENTE"})
+    @JwtSecurity(
+            claims = {
+                    @Claim(key = "sub", value = "1", type = ClaimType.LONG)
+            }
+    )
     void findByClienteId() {
+        given()
+                .when()
+                .get("/pedido")
+                .then()
+                .statusCode(200);
     }
 }
