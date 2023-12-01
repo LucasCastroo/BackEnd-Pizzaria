@@ -10,6 +10,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.logging.Logger;
 
 @Path("/minha-conta")
 @Produces(MediaType.APPLICATION_JSON)
@@ -22,6 +23,8 @@ public class ClienteLogadoResource {
     @Inject
     ClienteService clienteService;
 
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+
     @GET
     public Response minhaConta() {
         return Response.ok(clienteService.findById(Long.valueOf(jwt.getSubject()))).build();
@@ -30,10 +33,15 @@ public class ClienteLogadoResource {
     @PATCH
     @Path("/alterar-senha")
     public Response alterarSenha(@Valid AlterarSenhaDTO dto) {
-        //TODO validação
-        if(clienteService.alterarSenha(dto, Long.valueOf(jwt.getSubject()))){
+        try {
+            Long userId = Long.valueOf(jwt.getSubject());
+            clienteService.alterarSenha(dto, userId);
+            LOG.info("Senha alterada");
             return Response.noContent().build();
+        } catch (Exception e) {
+            LOG.error("Erro ao alterar a senha");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro interno do servidor ao alterar a senha.").build();
         }
-        return Response.serverError().build();
     }
 }

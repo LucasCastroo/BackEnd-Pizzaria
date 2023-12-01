@@ -10,6 +10,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import org.jboss.logging.Logger;
 
 @Path("/funcionarios")
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,9 +20,12 @@ public class FuncionarioResource {
     @Inject
     FuncionarioService service;
 
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+
     @POST
     public Response insert(@Valid FuncionarioDTO dto) {
         FuncionarioResponseDTO retorno = service.insert(dto);
+        LOG.info("Novo funcionario cadastrado!");
         return Response.status(201).entity(retorno).build();
     }
 
@@ -30,6 +34,7 @@ public class FuncionarioResource {
     @Transactional
     public Response update(FuncionarioDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
+        LOG.info("Informações de funcionario atualizadas!");
         return Response.status(Status.NO_CONTENT).build();
     }
 
@@ -37,18 +42,21 @@ public class FuncionarioResource {
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
+        LOG.info("Funcionario deletado!");
         return Response.status(Status.NO_CONTENT).build();
     }
 
     @GET
     @Path("/search/id/{id}")
     public Response findById(@PathParam("id") Long id) {
+        LOG.info("Busca de um funcionario por ID!");
         return Response.ok(service.findById(id)).build();
     }
 
     @GET
     @Path("/search/nome/{nome}")
     public Response findByNome(@PathParam("nome") String nome) {
+        LOG.info("Busca de um cliente por NOME!");
         return Response.ok(service.findByNome(nome)).build();
     }
 }

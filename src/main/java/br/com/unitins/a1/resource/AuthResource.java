@@ -36,7 +36,7 @@ public class AuthResource {
             String hashed = hashService.getHash(dto.senha());
             ClienteResponseDTO cliente = clienteService.findByEmailSenha(dto.email(), hashed);
             if (cliente == null) {
-                LOG.info("Login mal sucedido!");
+                LOG.error("Login mal sucedido!");
                 return Response.status(Response.Status.UNAUTHORIZED).entity("Credenciais inválidas").build();
             }
             String token = jwtService.generateJwt(cliente);
@@ -54,7 +54,7 @@ public class AuthResource {
             String hashed = hashService.getHash(dto.senha());
             FuncionarioResponseDTO funcionario = funcionarioService.findByEmailSenha(dto.email(), hashed);
                 if (funcionario == null) {
-                LOG.info("Login mal sucedido!");
+                LOG.error("Login mal sucedido!");
                 return Response.status(Response.Status.UNAUTHORIZED).entity("Credenciais inválidas").build();
             }
             String token = jwtService.generateJwt(funcionario);

@@ -1,6 +1,5 @@
 package br.com.unitins.a1.dto;
 
-import br.com.unitins.a1.model.Endereco;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.List;
