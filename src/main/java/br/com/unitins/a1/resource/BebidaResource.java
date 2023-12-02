@@ -8,6 +8,6 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 
 @ApplicationScoped
 @Path("/bebida")
-@SecurityRequirement(name = "SecurityScheme")
+@SecurityRequirement(name = "SecurityScheme") // sem isso o swagger não usa autorização
 public class BebidaResource extends ItemResource<BebidaServiceImpl, BebidaDTO> {
 }

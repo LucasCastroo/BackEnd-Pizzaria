@@ -2,10 +2,14 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.BebidaDTO;
 import br.com.unitins.a1.dto.BebidaResponseDTO;
-import br.com.unitins.a1.model.Bebida;
+import br.com.unitins.a1.model.Funcionario;
+import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.BebidaServiceImpl;
-import br.com.unitins.a1.service.JwtService;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
+import io.quarkus.test.security.jwt.Claim;
+import io.quarkus.test.security.jwt.ClaimType;
+import io.quarkus.test.security.jwt.JwtSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -16,13 +20,17 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @QuarkusTest
+@TestSecurity(user = "funcionario1@email.com", roles = {Funcionario.ROLE, NivelAcesso.Role.ADMIN})
+@JwtSecurity(
+        claims = {
+                @Claim(key = "sub", value = "1", type = ClaimType.LONG)
+        }
+)
 public class BebidaResourceTest {
 
     @Inject
     BebidaServiceImpl bebidaService;
 
-    @Inject
-    JwtService jwtService;
 
     @Test
     void createBebida() {
@@ -36,9 +44,8 @@ public class BebidaResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .header(TestUtils.authFuncionario)
                 .body(dto)
-                .when().post("/item/bebida")
+                .when().post("/bebida/create")
                 .then()
                 .statusCode(201)
                 .body("id", notNullValue(),
@@ -73,9 +80,8 @@ public class BebidaResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .header(TestUtils.authFuncionario)
                 .body(dtoUpdate)
-                .when().put("/item/bebida/"+ id)
+                .when().put("/bebida/update/" + id)
                 .then()
                 .statusCode(202);
 
@@ -101,8 +107,7 @@ public class BebidaResourceTest {
 
         given()
                 .when()
-                .header(TestUtils.authFuncionario)
-                .get("/item/bebida/" + bebidaTest.getId())
+                .get("/bebida/" + bebidaTest.getId())
                 .then()
                 .statusCode(200);
     }

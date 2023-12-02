@@ -11,6 +11,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -81,7 +82,7 @@ class UsuarioLogadoResourceTest {
 
     @Test
     void alterarCpf() {
-        CPFDTO dto = new CPFDTO("222.222.222-22");
+        CPFDTO dto = new CPFDTO("834.488.060-21");
         given()
                 .when()
                 .contentType(ContentType.JSON)
@@ -90,7 +91,7 @@ class UsuarioLogadoResourceTest {
                 .then()
                 .statusCode(200)
                 .body(
-                        "cpf", is("222.222.222-22")
+                        "cpf", is("834.488.060-21")
                 );
     }
 
@@ -105,7 +106,7 @@ class UsuarioLogadoResourceTest {
                 .then()
                 .statusCode(200)
                 .body(
-                        "nascimento", is(LocalDate.of(2000,3,21))
+                        "nascimento", is(LocalDate.of(2000, 3, 21).format(DateTimeFormatter.ISO_DATE))
                 );
     }
 

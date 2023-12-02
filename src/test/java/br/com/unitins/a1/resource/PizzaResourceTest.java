@@ -2,11 +2,15 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.PizzaDTO;
 import br.com.unitins.a1.dto.PizzaResponseDTO;
-import br.com.unitins.a1.model.Pizza;
+import br.com.unitins.a1.model.Funcionario;
+import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.model.TamanhoPizza;
-import br.com.unitins.a1.service.JwtService;
 import br.com.unitins.a1.service.PizzaServiceImpl;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
+import io.quarkus.test.security.jwt.Claim;
+import io.quarkus.test.security.jwt.ClaimType;
+import io.quarkus.test.security.jwt.JwtSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -17,13 +21,17 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @QuarkusTest
+@TestSecurity(user = "funcionario1@email.com", roles = {Funcionario.ROLE, NivelAcesso.Role.ADMIN})
+@JwtSecurity(
+        claims = {
+                @Claim(key = "sub", value = "1", type = ClaimType.LONG)
+        }
+)
 public class PizzaResourceTest {
 
     @Inject
     PizzaServiceImpl pizzaService;
 
-    @Inject
-    JwtService jwtService;
 
     @Test
     void createPizza() {
@@ -39,9 +47,8 @@ public class PizzaResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .header(TestUtils.authFuncionario)
                 .body(dto)
-                .when().post("/item/pizza")
+                .when().post("/pizza/create")
                 .then()
                 .statusCode(201)
                 .body("id", notNullValue(),
@@ -53,7 +60,6 @@ public class PizzaResourceTest {
                         "tempoDePreparo", is(25)
                 );
     }
-
     @Test
     void updatePizza() {
         PizzaDTO dto = new PizzaDTO(
@@ -81,9 +87,8 @@ public class PizzaResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .header(TestUtils.authFuncionario)
                 .body(dtoUpdate)
-                .when().put("/item/pizza/"+ id)
+                .when().put("/pizza/update/" + id)
                 .then()
                 .statusCode(202);
 
@@ -112,8 +117,7 @@ public class PizzaResourceTest {
 
         given()
                 .when()
-                .header(TestUtils.authFuncionario)
-                .get("/item/pizza/" + pizzaTest.getId())
+                .get("/pizza/" + pizzaTest.getId())
                 .then()
                 .statusCode(200);
     }
