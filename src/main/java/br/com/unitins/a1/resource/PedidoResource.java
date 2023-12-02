@@ -3,6 +3,7 @@ package br.com.unitins.a1.resource;
 import br.com.unitins.a1.dto.PedidoDTO;
 import br.com.unitins.a1.dto.StatusPedidoDTO;
 import br.com.unitins.a1.model.Cliente;
+import br.com.unitins.a1.model.Funcionario;
 import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.model.Status;
 import br.com.unitins.a1.service.PedidoService;
@@ -36,15 +37,15 @@ public class PedidoResource {
     }
 
     @PUT
-    @Path("/")
+    @Path("/{id}")
     @RolesAllowed({Cliente.ROLE, NivelAcesso.Role.SUPERVISOR})
-    public Response update(PedidoDTO dto){
+    public Response update(PedidoDTO dto, @PathParam("id") Long id) {
         LOG.info("Pedido atualizado!");
-        return Response.status(Response.Status.ACCEPTED).entity(service.update(dto, idUsuario)).build();
+        return Response.status(Response.Status.ACCEPTED).entity(service.update(dto, id)).build();
     }
 
     @PATCH
-    @Path("/{id}")
+    @Path("/{id}/status")
     @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.ATENDENTE, NivelAcesso.Role.ADMIN})
     public Response updateStatus(StatusPedidoDTO dto, @PathParam("id") Long id){
         LOG.info("Status do pedido atualizado!");
@@ -56,13 +57,13 @@ public class PedidoResource {
     @RolesAllowed({NivelAcesso.Role.ADMIN})
     public Response delete(@PathParam("id") Long id){
         service.delete(id);
-        LOG.info("Pedido deletado!");
+        LOG.infof("Pedido %d deletado!", id);
         return Response.noContent().build();
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
+    @RolesAllowed({Cliente.ROLE, Funcionario.ROLE})
     public Response findById(@PathParam("id") Long id){
         LOG.info("Busca de pedido realizada!");
         return Response.ok().entity(service.findById(id)).build();

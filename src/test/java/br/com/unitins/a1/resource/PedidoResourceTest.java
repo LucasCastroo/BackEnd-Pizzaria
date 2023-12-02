@@ -1,8 +1,7 @@
 package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.*;
-import br.com.unitins.a1.model.FormaPagamento;
-import br.com.unitins.a1.model.TamanhoPizza;
+import br.com.unitins.a1.model.*;
 import br.com.unitins.a1.service.ClienteService;
 import br.com.unitins.a1.service.PedidoService;
 import br.com.unitins.a1.service.PizzaServiceImpl;
@@ -11,15 +10,22 @@ import io.quarkus.test.security.TestSecurity;
 import io.quarkus.test.security.jwt.Claim;
 import io.quarkus.test.security.jwt.ClaimType;
 import io.quarkus.test.security.jwt.JwtSecurity;
+import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
+@TestSecurity(user = "cliente1@email.com", roles = {Cliente.ROLE})
+@JwtSecurity(
+        claims = {
+                @Claim(key = "sub", value = "1", type = ClaimType.LONG)
+        }
+)
 class PedidoResourceTest {
     @Inject
     PedidoService service;
@@ -42,19 +48,7 @@ class PedidoResourceTest {
                 25
         );
 
-        ItemResponseDTO pizza = itemService.create(pizzaDto);
-
-        ClienteDTO clienteDTO = new ClienteDTO(
-                "Janio Junior",
-                "111.111.111-11",
-                "janio@gmail.com",
-                "111111",
-                "(11) 11111-1111",
-                LocalDate.of(1994,1,1),
-                null
-        );
-
-        ClienteResponseDTO cliente = clienteService.insert(clienteDTO);
+        ItemResponseDTO<Pizza> pizza = itemService.create(pizzaDto);
 
         PedidoDTO dto = new PedidoDTO(
                 List.of(new ItemPedidoDTO(1, pizza.getId(), TipoItem.PIZZA)),
@@ -63,38 +57,192 @@ class PedidoResourceTest {
                 FormaPagamento.PIX
         );
 
+        given()
+                .contentType(ContentType.JSON)
+                .body(dto)
+                .post("/pedido")
+                .then()
+                .statusCode(201)
+                .body(
+                        "cliente.id", is(1),
+                        "cupom.codigo", is("CUPOM01"),
+                        "items[0].item.nome", is("Pizza de Calabresa"),
+                        "items[0].item.id", is(pizza.getId().intValue())
+                );
 
     }
 
     @Test
     void update() {
+        PizzaDTO pizzaDto = new PizzaDTO(
+                "Pizza de Calabresa",
+                "Calabresa, Cheddar e Ovo",
+                40.00,
+                600,
+                TamanhoPizza.MEDIA,
+                "Calabresa, Cheddar e Ovo",
+                25
+        );
+
+        ItemResponseDTO<Pizza> pizza = itemService.create(pizzaDto);
+
+        PedidoDTO dto = new PedidoDTO(
+                List.of(new ItemPedidoDTO(1, pizza.getId(), TipoItem.PIZZA)),
+                "CUPOM01",
+                1L,
+                FormaPagamento.PIX
+        );
+
+        PedidoResponseDTO pedido = service.create(dto, 1L);
+
+        PedidoDTO updateDto = new PedidoDTO(
+                null,
+                null,
+                null,
+                FormaPagamento.DINHEIRO
+        );
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(updateDto)
+                .put("/pedido/" + pedido.id())
+                .then()
+                .statusCode(202)
+                .body(
+                        "formaPagamento", is("DINHEIRO")
+                );
     }
 
     @Test
-    void updateStatus() {
-    }
-
-    @Test
-    void delete() {
-
-    }
-
-    @Test
-    void findById() {
-    }
-
-    @Test
-    @TestSecurity(user = "cliente1", roles = {"CLIENTE"})
+    @TestSecurity(user = "funcionario1@email.com", roles = {Funcionario.ROLE, NivelAcesso.Role.ADMIN})
     @JwtSecurity(
             claims = {
                     @Claim(key = "sub", value = "1", type = ClaimType.LONG)
             }
     )
+    void updateStatus() {
+        PizzaDTO pizzaDto = new PizzaDTO(
+                "Pizza de Calabresa",
+                "Calabresa, Cheddar e Ovo",
+                40.00,
+                600,
+                TamanhoPizza.MEDIA,
+                "Calabresa, Cheddar e Ovo",
+                25
+        );
+
+        ItemResponseDTO<Pizza> pizza = itemService.create(pizzaDto);
+
+        PedidoDTO dto = new PedidoDTO(
+                List.of(new ItemPedidoDTO(1, pizza.getId(), TipoItem.PIZZA)),
+                "CUPOM01",
+                1L,
+                FormaPagamento.PIX
+        );
+
+        PedidoResponseDTO pedido = service.create(dto, 1L);
+
+        StatusPedidoDTO statusPedidoDTO = new StatusPedidoDTO(Status.CANCELADO);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(statusPedidoDTO)
+                .patch("/pedido/" + pedido.id() + "/status")
+                .then()
+                .statusCode(202)
+                .body(
+                        "historicoStatus[0].status", is("CANCELADO")
+                );
+    }
+
+    @Test
+    @TestSecurity(user = "funcionario1@email.com", roles = {Funcionario.ROLE, NivelAcesso.Role.ADMIN})
+    @JwtSecurity(
+            claims = {
+                    @Claim(key = "sub", value = "1", type = ClaimType.LONG)
+            }
+    )
+    void delete() {
+        PizzaDTO pizzaDto = new PizzaDTO(
+                "Pizza de Calabresa",
+                "Calabresa, Cheddar e Ovo",
+                40.00,
+                600,
+                TamanhoPizza.MEDIA,
+                "Calabresa, Cheddar e Ovo",
+                25
+        );
+
+        ItemResponseDTO<Pizza> pizza = itemService.create(pizzaDto);
+
+        PedidoDTO dto = new PedidoDTO(
+                List.of(new ItemPedidoDTO(1, pizza.getId(), TipoItem.PIZZA)),
+                "CUPOM01",
+                1L,
+                FormaPagamento.PIX
+        );
+
+        PedidoResponseDTO pedido = service.create(dto, 1L);
+
+        StatusPedidoDTO statusPedidoDTO = new StatusPedidoDTO(Status.CANCELADO);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(statusPedidoDTO)
+                .delete("/pedido/" + pedido.id())
+                .then()
+                .statusCode(204);
+    }
+
+    @Test
+    void findById() {
+        PizzaDTO pizzaDto = new PizzaDTO(
+                "Pizza de Calabresa",
+                "Calabresa, Cheddar e Ovo",
+                40.00,
+                600,
+                TamanhoPizza.MEDIA,
+                "Calabresa, Cheddar e Ovo",
+                25
+        );
+
+        ItemResponseDTO<Pizza> pizza = itemService.create(pizzaDto);
+
+        PedidoDTO dto = new PedidoDTO(
+                List.of(new ItemPedidoDTO(1, pizza.getId(), TipoItem.PIZZA)),
+                "CUPOM01",
+                1L,
+                FormaPagamento.PIX
+        );
+
+        PedidoResponseDTO pedido = service.create(dto, 1L);
+
+        given()
+                .when()
+                .get("/pedido/" + pedido.id())
+                .then()
+                .statusCode(200)
+                .body(
+                        "formaPagamento", is("PIX")
+                );
+    }
+
+
+    @Test
     void findByClienteId() {
         given()
                 .when()
                 .get("/pedido")
                 .then()
                 .statusCode(200);
+    }
+
+    @Test
+    void pagar() {
+        given()
+                .when()
+                .patch("/pedido/1/pagar")
+                .then()
+                .statusCode(202);
     }
 }
