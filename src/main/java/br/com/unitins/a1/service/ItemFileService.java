@@ -15,38 +15,34 @@ import java.util.UUID;
 @ApplicationScoped
 public class ItemFileService implements FileService{
 
-    private final String PATH_USER = System.getProperty("user.home") +
-            File.separator + "quarkus" +
-            File.separator + "images" +
-            File.separator + "item" +  File.separator;
+    private static final int MAX_FILE_SIZE = 1024 * 1024 * 10;
 
     private static final List<String> SUPPORTED_MIME_TYPES =
             Arrays.asList("image/jpeg", "image/jpg", "image/png", "image/gif");
+    private final String PATH = "." + File.separator + "img" + File.separator + "item" + File.separator;
 
-    private static final int MAX_FILE_SIZE = 1024 * 1024 * 10; // 10mb
+    public String gerarNomeArquivo(String extensao) {
+        String nome = UUID.randomUUID() + "." + extensao;
+        if (Paths.get(PATH).resolve(nome).toFile().exists()) {
+            // praticamente impossivel isso acontecer antes da morte térmica do universo, mas vai que né
+            nome = gerarNomeArquivo(extensao);
+        }
+        return nome;
+    }
 
     @Override
     public String salvar(String nomeArquivo, byte[] arquivo) throws IOException {
         verificarTamanhoImagem(arquivo);
 
         verificarTipoImagem(nomeArquivo);
-
-        // criar diretorio caso nao exista
-        Path diretorio = Paths.get(PATH_USER);
+        Path diretorio = Paths.get(PATH);
         Files.createDirectories(diretorio);
 
-        // criando o nome do arquivo randomico
         String mimeType = Files.probeContentType(Paths.get(nomeArquivo));
         String extensao = mimeType.substring(mimeType.lastIndexOf('/') + 1);
-        String novoNomeArquivo = UUID.randomUUID() + "." + extensao;
-
-        // defindo o caminho completo do arquivo
+        String novoNomeArquivo = gerarNomeArquivo(extensao);
         Path filePath = diretorio.resolve(novoNomeArquivo);
 
-        if (filePath.toFile().exists())
-            throw new IOException("Nome de arquivo ja existe. Os alunos vão buscar uma melhor solucao.");
-
-        // salvar arquivo
         try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
             fos.write(arquivo);
         }
@@ -56,7 +52,7 @@ public class ItemFileService implements FileService{
 
     @Override
     public File obter(String nomeArquivo) {
-        File file = new File(PATH_USER+nomeArquivo);
+        File file = new File(PATH + nomeArquivo);
         return file;
     }
 

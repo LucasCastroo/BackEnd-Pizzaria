@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class UsuarioDTO {
+public abstract class UsuarioDTO {
     @NotBlank(message = "Campo nome não pode ser nulo!")
     private final String nome;
     @NotBlank(message = "Campo cpf não pode ser nulo!")
