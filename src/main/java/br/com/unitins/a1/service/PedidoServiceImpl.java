@@ -93,6 +93,7 @@ public class PedidoServiceImpl implements PedidoService{
     @Transactional
     public PedidoResponseDTO update(PedidoDTO dto, Long id) {
         Pedido pedido = repository.findById(id);
+        repository.flush();
         return setupPedido(dto, pedido);
     }
 
@@ -104,9 +105,10 @@ public class PedidoServiceImpl implements PedidoService{
         sp.setHorario(LocalDateTime.now());
         sp.setStatus(dto.status());
         pedido.getStatus().add(sp);
-        repository.persist(pedido);
+        repository.persistAndFlush(pedido);
         return PedidoResponseDTO.from(pedido);
     }
+
 
     @Override
     @Transactional

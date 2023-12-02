@@ -7,7 +7,6 @@ import br.com.unitins.a1.repository.CupomRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 
 @ApplicationScoped
 public class CupomServiceImpl implements CupomService{
@@ -28,7 +27,7 @@ public class CupomServiceImpl implements CupomService{
         Cupom cupom = repository.findById(id);
         if (dto.codigo() != null) cupom.setCodigo(dto.codigo());
         if (dto.desconto() != null) cupom.setDesconto(dto.desconto());
-        repository.persist(cupom);
+        repository.persistAndFlush(cupom);
         return CupomResponseDTO.from(cupom);
     }
 

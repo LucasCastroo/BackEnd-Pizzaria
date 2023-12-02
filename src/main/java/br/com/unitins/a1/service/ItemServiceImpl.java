@@ -46,6 +46,7 @@ public class ItemServiceImpl implements ItemService{
         if(dto.tamanhoPizza() != null) pizza.setTamanhoPizza(dto.tamanhoPizza());
         if(dto.preco() != null) pizza.setPreco(dto.preco());
         if(dto.tempoDePreparo() != null) pizza.setTempoDePreparo(dto.tempoDePreparo());
+        pizzaRepository.persistAndFlush(pizza);
         return pizza;
     }
 
@@ -58,6 +59,7 @@ public class ItemServiceImpl implements ItemService{
         if(dto.nome() != null) bebida.setNome(dto.nome());
         if(dto.preco() != null) bebida.setPreco(dto.preco());
         if(dto.ml() != null) bebida.setMl(dto.ml());
+        bebidaRepository.persistAndFlush(bebida);
         return bebida;
     }
 

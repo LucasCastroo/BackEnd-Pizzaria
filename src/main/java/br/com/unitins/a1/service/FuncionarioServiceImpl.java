@@ -46,6 +46,7 @@ public class FuncionarioServiceImpl implements FuncionarioService, UsuarioServic
             funcionario.setSenha(hashService.getHash(dto.getSenha()));
             funcionario.setNascimento(dto.getNascimento());
             funcionario.setTipoAcesso(dto.getTipoAcesso());
+            repository.persistAndFlush(funcionario);
         } else {
             throw new NotFoundException();
         }

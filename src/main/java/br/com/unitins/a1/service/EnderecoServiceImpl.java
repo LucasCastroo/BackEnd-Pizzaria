@@ -40,6 +40,7 @@ public class EnderecoServiceImpl implements EnderecoService{
             endereco.setBairro(dto.getBairro());
             endereco.setCidade(dto.getCidade());
             endereco.setCep(dto.getCep());
+            repositoryEndereco.persistAndFlush(endereco);
         } else {
             throw new NotFoundException();
         }
