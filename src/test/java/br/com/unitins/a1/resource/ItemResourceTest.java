@@ -21,16 +21,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @QuarkusTest
 class ItemResourceTest {
 
-
-
-
     @Inject
     ItemService itemService;
 
     @Inject
     JwtService jwtService;
-
-
 
     @Test
     void createPizza() {
@@ -191,5 +186,21 @@ class ItemResourceTest {
 
     @Test
     void findBebida() {
+        BebidaDTO dto = new BebidaDTO(
+                "Coca-Cola",
+                "Bebida Gelada",
+                4.0,
+                100,
+                350
+        );
+
+        Bebida bebidaTest = itemService.createBebida(dto);
+
+        given()
+                .when()
+                .header(TestUtils.authFuncionario)
+                .get("/item/bebida/" + bebidaTest.getId())
+                .then()
+                .statusCode(200);
     }
 }

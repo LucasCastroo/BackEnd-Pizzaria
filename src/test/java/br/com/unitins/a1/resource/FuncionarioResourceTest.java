@@ -9,6 +9,8 @@ import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -26,7 +28,7 @@ public class FuncionarioResourceTest {
                 "222.222.222-22",
                 "mailson@gmail.com",
                 "222222",
-                "1986-07-18",
+                LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );
 
@@ -40,7 +42,7 @@ public class FuncionarioResourceTest {
                         "nome", is("Mailson"),
                         "cpf", is("222.222.222-22"),
                         "email", is("mailson@gmail.com"),
-                        "nascimento", is("1986-07-18"),
+                        "nascimento", is(LocalDate.of(1986,7,18)),
                         "tipoAcesso", is(NivelAcesso.GERENTE.name())
                 );
     }
@@ -52,7 +54,7 @@ public class FuncionarioResourceTest {
                 "222.222.222-22",
                 "mailson@gmail.com",
                 "222222",
-                "1986-07-18",
+                LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );
 
@@ -64,7 +66,7 @@ public class FuncionarioResourceTest {
                 "222.222.222-22",
                 "mailson@gmail.com",
                 "222222",
-                "1986-07-18",
+                LocalDate.of(1986,7,18),
                 NivelAcesso.ADMIN
         );
 
@@ -79,7 +81,7 @@ public class FuncionarioResourceTest {
         assertThat(fun.nome(), is("Mailson"));
         assertThat(fun.cpf(), is("222.222.222-22"));
         assertThat(fun.email(), is("mailson@gmail.com"));
-        assertThat(fun.nascimento(), is("1986-07-18"));
+        assertThat(fun.nascimento(), is(LocalDate.of(1986,7,18)));
         assertThat(fun.tipoAcesso(), is(NivelAcesso.ADMIN));
     }
 
@@ -90,7 +92,7 @@ public class FuncionarioResourceTest {
                 "222.222.222-22",
                 "mailson@gmail.com",
                 "222222",
-                "1986-07-18",
+                LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );
 
@@ -110,7 +112,7 @@ public class FuncionarioResourceTest {
                 "222.222.222-22",
                 "mailson@gmail.com",
                 "222222",
-                "1986-07-18",
+                LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );
 
@@ -132,7 +134,7 @@ public class FuncionarioResourceTest {
                 "222.222.222-22",
                 "mailson@gmail.com",
                 "222222",
-                "1986-07-18",
+                LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );
 

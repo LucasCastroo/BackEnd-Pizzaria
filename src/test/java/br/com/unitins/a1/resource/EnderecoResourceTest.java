@@ -12,6 +12,7 @@ import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ class EnderecoResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 null
         );
 
@@ -78,7 +79,7 @@ class EnderecoResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 null
         );
 
@@ -121,7 +122,7 @@ class EnderecoResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 null
         );
 
@@ -152,7 +153,7 @@ class EnderecoResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 null
         );
 

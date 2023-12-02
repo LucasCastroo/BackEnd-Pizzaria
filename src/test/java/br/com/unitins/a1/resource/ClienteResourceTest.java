@@ -9,6 +9,7 @@ import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class ClienteResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 enderecos
         );
 
@@ -56,7 +57,7 @@ public class ClienteResourceTest {
                         "cpf", is("111.111.111-11"),
                         "email", is("janio@gmail.com"),
                         "telefone", is("(11) 11111-1111"),
-                        "nascimento", is("1994-01-01")
+                        "nascimento", is(LocalDate.of(1994,1,1))
                 );
     }
 
@@ -70,7 +71,7 @@ public class ClienteResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 enderecos
         );
 
@@ -83,7 +84,7 @@ public class ClienteResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(22) 22222-2222",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 enderecos
         );
 
@@ -99,7 +100,7 @@ public class ClienteResourceTest {
         assertThat(cli.cpf(), is("111.111.111-11"));
         assertThat(cli.email(), is("janio@gmail.com"));
         assertThat(cli.telefone(), is("(22) 22222-2222"));
-        assertThat(cli.nascimento(), is("1994-01-01"));
+        assertThat(cli.nascimento(), is(LocalDate.of(1994,1,1)));
     }
 
     @Test
@@ -112,7 +113,7 @@ public class ClienteResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 enderecos
         );
 
@@ -135,7 +136,7 @@ public class ClienteResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 enderecos
         );
 
@@ -160,7 +161,7 @@ public class ClienteResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 enderecos
         );
 

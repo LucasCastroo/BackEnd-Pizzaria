@@ -15,6 +15,7 @@ import io.quarkus.test.security.jwt.JwtSecurity;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -50,7 +51,7 @@ class PedidoResourceTest {
                 "janio@gmail.com",
                 "111111",
                 "(11) 11111-1111",
-                "1994-01-01",
+                LocalDate.of(1994,1,1),
                 null
         );
 
