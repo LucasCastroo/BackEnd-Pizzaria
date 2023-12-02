@@ -5,8 +5,8 @@ import br.com.unitins.a1.model.Bebida;
 public class BebidaResponseDTO extends ItemResponseDTO<Bebida> {
     private final Integer ml;
 
-    public BebidaResponseDTO(String nome, String descricao, Double preco, Integer kCal, String nomeImagem, Integer ml) {
-        super(nome, descricao, preco, kCal, nomeImagem);
+    public BebidaResponseDTO(Long id, String nome, String descricao, Double preco, Integer kCal, String nomeImagem, Integer ml) {
+        super(id, nome, descricao, preco, kCal, nomeImagem);
         this.ml = ml;
     }
 
@@ -14,6 +14,7 @@ public class BebidaResponseDTO extends ItemResponseDTO<Bebida> {
     public static BebidaResponseDTO from(Bebida item) {
         try {
             return new BebidaResponseDTO(
+                    item.getId(),
                     item.getNome(),
                     item.getDescricao(),
                     item.getPreco(),

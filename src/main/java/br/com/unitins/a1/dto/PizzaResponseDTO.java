@@ -8,8 +8,8 @@ public class PizzaResponseDTO extends ItemResponseDTO<Pizza> {
     private final String ingredientes;
     private final Integer tempoDePreparo;
 
-    public PizzaResponseDTO(String nome, String descricao, Double preco, Integer kCal, String nomeImagem, TamanhoPizza tamanhoPizza, String ingredientes, Integer tempoDePreparo) {
-        super(nome, descricao, preco, kCal, nomeImagem);
+    public PizzaResponseDTO(Long id, String nome, String descricao, Double preco, Integer kCal, String nomeImagem, TamanhoPizza tamanhoPizza, String ingredientes, Integer tempoDePreparo) {
+        super(id, nome, descricao, preco, kCal, nomeImagem);
         this.tamanhoPizza = tamanhoPizza;
         this.ingredientes = ingredientes;
         this.tempoDePreparo = tempoDePreparo;
@@ -18,6 +18,7 @@ public class PizzaResponseDTO extends ItemResponseDTO<Pizza> {
     public static PizzaResponseDTO from(Pizza item) {
         try {
             return new PizzaResponseDTO(
+                    item.getId(),
                     item.getNome(),
                     item.getDescricao(),
                     item.getPreco(),

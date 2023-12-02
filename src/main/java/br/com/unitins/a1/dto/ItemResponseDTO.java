@@ -3,13 +3,15 @@ package br.com.unitins.a1.dto;
 import br.com.unitins.a1.model.Item;
 
 public abstract class ItemResponseDTO<T extends Item> {
+    private final Long id;
     private final String nome;
     private final String descricao;
     private final Double preco;
     private final Integer kCal;
     private final String nomeImagem;
 
-    protected ItemResponseDTO(String nome, String descricao, Double preco, Integer kCal, String nomeImagem) {
+    protected ItemResponseDTO(Long id, String nome, String descricao, Double preco, Integer kCal, String nomeImagem) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
@@ -35,5 +37,9 @@ public abstract class ItemResponseDTO<T extends Item> {
 
     public String getNomeImagem() {
         return nomeImagem;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

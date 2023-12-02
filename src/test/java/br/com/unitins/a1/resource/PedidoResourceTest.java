@@ -2,7 +2,6 @@ package br.com.unitins.a1.resource;
 
 import br.com.unitins.a1.dto.*;
 import br.com.unitins.a1.model.FormaPagamento;
-import br.com.unitins.a1.model.Pizza;
 import br.com.unitins.a1.model.TamanhoPizza;
 import br.com.unitins.a1.service.ClienteService;
 import br.com.unitins.a1.service.ItemService;
@@ -43,7 +42,7 @@ class PedidoResourceTest {
                 25
         );
 
-        Pizza pizza = itemService.create(pizzaDto);
+        ItemResponseDTO pizza = itemService.create(pizzaDto);
 
         ClienteDTO clienteDTO = new ClienteDTO(
                 "Janio Junior",
