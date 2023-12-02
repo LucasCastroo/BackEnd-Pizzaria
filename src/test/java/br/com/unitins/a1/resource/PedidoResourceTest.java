@@ -43,7 +43,7 @@ class PedidoResourceTest {
                 25
         );
 
-        Pizza pizza = itemService.createPizza(pizzaDto);
+        Pizza pizza = itemService.create(pizzaDto);
 
         ClienteDTO clienteDTO = new ClienteDTO(
                 "Janio Junior",

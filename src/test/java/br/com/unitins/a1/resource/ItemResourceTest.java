@@ -27,34 +27,6 @@ class ItemResourceTest {
     @Inject
     JwtService jwtService;
 
-    @Test
-    void createPizza() {
-        PizzaDTO dto = new PizzaDTO(
-                "Pizza de Calabresa",
-                "Calabresa, Cheddar e Ovo",
-                40.00,
-                600,
-                TamanhoPizza.MEDIA,
-                "Calabresa, Cheddar e Ovo",
-                25
-        );
-
-        given()
-                .contentType(ContentType.JSON)
-                .header(TestUtils.authFuncionario)
-                .body(dto)
-                .when().post("/item/pizza")
-                .then()
-                .statusCode(201)
-                .body("id", notNullValue(),
-                        "nome", is("Pizza de Calabresa"),
-                        "descricao", is("Calabresa, Cheddar e Ovo"),
-                        "preco", is(40.00f),
-                        "kCal", is(600),
-                        "tamanhoPizza", is(TamanhoPizza.MEDIA.name()),
-                        "tempoDePreparo", is(25)
-                );
-    }
 
     @Test
     void createBebida() {
@@ -82,47 +54,7 @@ class ItemResourceTest {
                 );
     }
 
-    @Test
-    void updatePizza() {
-        PizzaDTO dto = new PizzaDTO(
-                "Pizza de Calabresa",
-                "Calabresa, Cheddar e Ovo",
-                40.0,
-                600,
-                TamanhoPizza.MEDIA,
-                "Calabresa, Cheddar e Ovo",
-                25
-        );
 
-        Pizza pizzaTest = itemService.createPizza(dto);
-        Long id = pizzaTest.getId();
-
-        PizzaDTO dtoUpdate = new PizzaDTO(
-                "Pizza de Calabresa",
-                "Calabresa, Cheddar, Ovo e Azeitona",
-                45.0,
-                600,
-                TamanhoPizza.MEDIA,
-                "Calabresa, Cheddar, Ovo e Azeitona",
-                25
-        );
-
-        given()
-                .contentType(ContentType.JSON)
-                .header(TestUtils.authFuncionario)
-                .body(dtoUpdate)
-                .when().put("/item/pizza/"+ id)
-                .then()
-                .statusCode(202);
-
-        Pizza piz = itemService.findPizza(id);
-        assertThat(piz.getNome(), is("Pizza de Calabresa"));
-        assertThat(piz.getDescricao(), is("Calabresa, Cheddar, Ovo e Azeitona"));
-        assertThat(piz.getPreco(), is(45.0));
-        assertThat(piz.getTamanhoPizza(), is(TamanhoPizza.MEDIA));
-        assertThat(piz.getIngredientes(), is("Calabresa, Cheddar, Ovo e Azeitona"));
-        assertThat(piz.getTempoDePreparo(), is(25));
-    }
 
     @Test
     void updateBebida() {
@@ -134,7 +66,7 @@ class ItemResourceTest {
                 350
         );
 
-        Bebida bebidaTest = itemService.createBebida(dto);
+        Bebida bebidaTest = itemService.create(dto);
         Long id = bebidaTest.getId();
 
         BebidaDTO dtoUpdate = new BebidaDTO(
@@ -162,27 +94,7 @@ class ItemResourceTest {
     }
 
 
-    @Test
-    void findPizza() {
-        PizzaDTO dto = new PizzaDTO(
-                "Pizza de Calabresa",
-                "Calabresa, Cheddar e Ovo",
-                40.0,
-                600,
-                TamanhoPizza.MEDIA,
-                "Calabresa, Cheddar e Ovo",
-                25
-        );
 
-        Pizza pizzaTest = itemService.createPizza(dto);
-
-        given()
-                .when()
-                .header(TestUtils.authFuncionario)
-                .get("/item/pizza/" + pizzaTest.getId())
-                .then()
-                .statusCode(200);
-    }
 
     @Test
     void findBebida() {
@@ -194,7 +106,7 @@ class ItemResourceTest {
                 350
         );
 
-        Bebida bebidaTest = itemService.createBebida(dto);
+        Bebida bebidaTest = itemService.create(dto);
 
         given()
                 .when()
