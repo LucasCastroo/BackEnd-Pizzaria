@@ -15,8 +15,6 @@ public class Cliente extends Usuario {
             inverseJoinColumns = @JoinColumn(name = "id_endereco"))
     private List<Endereco> enderecos;
 
-
-
     public String getTelefone() {
         return telefone;
     }

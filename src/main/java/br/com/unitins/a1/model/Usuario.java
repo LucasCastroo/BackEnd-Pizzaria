@@ -7,7 +7,6 @@ import java.time.LocalDate;
 @MappedSuperclass
 public abstract class Usuario extends DefaultEntity {
     private String nome;
-
     private String cpf;
     private String email;
     private String senha;

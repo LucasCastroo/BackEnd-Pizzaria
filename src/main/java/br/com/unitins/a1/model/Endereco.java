@@ -10,7 +10,6 @@ public class Endereco extends DefaultEntity{
     private String logradouro;
     private String bairro;
     private String cidade;
-    @Size(min = 8, max = 9)
     private String cep;
     public Endereco(){
 
