@@ -4,8 +4,8 @@ import br.com.unitins.a1.dto.*;
 import br.com.unitins.a1.model.FormaPagamento;
 import br.com.unitins.a1.model.TamanhoPizza;
 import br.com.unitins.a1.service.ClienteService;
-import br.com.unitins.a1.service.ItemService;
 import br.com.unitins.a1.service.PedidoService;
+import br.com.unitins.a1.service.PizzaServiceImpl;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.quarkus.test.security.jwt.Claim;
@@ -28,7 +28,7 @@ class PedidoResourceTest {
     ClienteService clienteService;
 
     @Inject
-    ItemService itemService;
+    PizzaServiceImpl itemService;
 
     @Test
     void create() {
