@@ -1,7 +1,6 @@
 package br.com.unitins.a1.resource;
 
-import br.com.unitins.a1.dto.AlterarSenhaDTO;
-import br.com.unitins.a1.dto.NomeDTO;
+import br.com.unitins.a1.dto.*;
 import br.com.unitins.a1.model.Cliente;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
@@ -10,6 +9,8 @@ import io.quarkus.test.security.jwt.ClaimType;
 import io.quarkus.test.security.jwt.JwtSecurity;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -65,17 +66,61 @@ class UsuarioLogadoResourceTest {
 
     @Test
     void alterarEmail() {
+        EmailDTO dto = new EmailDTO("jose@email.com");
+        given()
+                .when()
+                .contentType(ContentType.JSON)
+                .body(dto)
+                .patch("/minha-conta/alterar-email")
+                .then()
+                .statusCode(200)
+                .body(
+                        "email", is("jose@email.com")
+                );
     }
 
     @Test
     void alterarCpf() {
+        CPFDTO dto = new CPFDTO("222.222.222-22");
+        given()
+                .when()
+                .contentType(ContentType.JSON)
+                .body(dto)
+                .patch("/minha-conta/alterar-cpf")
+                .then()
+                .statusCode(200)
+                .body(
+                        "cpf", is("222.222.222-22")
+                );
     }
 
     @Test
     void alterarNascimento() {
+        NascimentoDTO dto = new NascimentoDTO(LocalDate.of(2000,3,21));
+        given()
+                .when()
+                .contentType(ContentType.JSON)
+                .body(dto)
+                .patch("/minha-conta/alterar-nascimento")
+                .then()
+                .statusCode(200)
+                .body(
+                        "nascimento", is(LocalDate.of(2000,3,21))
+                );
     }
 
     @Test
     void alterarTelefone() {
+        TelefoneDTO dto = new TelefoneDTO("63988237165");
+        given()
+                .when()
+                .contentType(ContentType.JSON)
+                .body(dto)
+                .patch("/minha-conta/alterar-telefone")
+                .then()
+                .statusCode(200)
+                .body(
+                        "telefone", is("63988237165")
+                );
     }
 }
