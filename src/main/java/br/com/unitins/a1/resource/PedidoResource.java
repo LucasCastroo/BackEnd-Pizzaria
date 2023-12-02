@@ -4,6 +4,7 @@ import br.com.unitins.a1.dto.PedidoDTO;
 import br.com.unitins.a1.dto.StatusPedidoDTO;
 import br.com.unitins.a1.model.Cliente;
 import br.com.unitins.a1.model.NivelAcesso;
+import br.com.unitins.a1.model.Status;
 import br.com.unitins.a1.service.PedidoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -72,5 +73,14 @@ public class PedidoResource {
     public Response findByClienteId(){
         LOG.info("Busca de cliente realizada!");
         return Response.ok().entity(service.findByClienteId(idUsuario)).build();
+    }
+
+    @PATCH
+    @Path("/{id}/pagar")
+    @RolesAllowed(Cliente.ROLE)
+    public Response pagar(@PathParam("id") Long id) {
+        service.updateStatus(new StatusPedidoDTO(Status.EM_PREPARO), id);
+        return Response.accepted().build();
+
     }
 }
