@@ -1,11 +1,17 @@
 package br.unitins.tp1.pizzaria.dto;
 
 import br.unitins.tp1.pizzaria.model.Item;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 public abstract class ItemDTO<T extends Item> {
+    @NotBlank
     public final String nome;
+    @NotBlank
     public final String descricao;
+    @Positive
     public final Double preco;
+    @Positive
     public final Integer kCal;
 
 

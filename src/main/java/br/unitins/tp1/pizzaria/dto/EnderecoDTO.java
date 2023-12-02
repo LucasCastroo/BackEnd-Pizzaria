@@ -1,10 +1,14 @@
 package br.unitins.tp1.pizzaria.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class EnderecoDTO {
+    @NotBlank
     private final String logradouro;
+    @NotBlank
     private final String bairro;
+    @NotBlank
     private final String cidade;
     @Size(min = 8, max = 9, message = "Tamanho de CEP inválido")
     private final String cep;

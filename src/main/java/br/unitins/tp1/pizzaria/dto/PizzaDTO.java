@@ -2,12 +2,18 @@ package br.unitins.tp1.pizzaria.dto;
 
 import br.unitins.tp1.pizzaria.model.Pizza;
 import br.unitins.tp1.pizzaria.model.TamanhoPizza;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 
 public class PizzaDTO extends ItemDTO<Pizza> {
-
+    @NotNull
     private final TamanhoPizza tamanhoPizza;
+    @NotBlank
     private final String ingredientes;
+    @NotNull
+    @Positive
     private final Integer tempoDePreparo;
 
     public PizzaDTO(String nome, String descricao, Double preco, Integer kCal, TamanhoPizza tamanhoPizza, String ingredientes, Integer tempoDePreparo) {
