@@ -45,7 +45,7 @@ public class UsuarioLogadoResource {
             LOG.info("Senha alterada");
             return Response.noContent().build();
         } catch (Exception e) {
-            LOG.error("Erro ao alterar a senha", e);
+            LOG.error("Erro ao alterar a senha: ", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro interno do servidor ao alterar a senha.").build();
         }
@@ -57,11 +57,10 @@ public class UsuarioLogadoResource {
         try {
             return Response.ok(getUsuarioService().alterarNome(dto, idUsuario)).build();
         } catch (Exception e) {
-            LOG.error("Erro ao alterar o nome", e);
+            LOG.error("Erro ao alterar o nome: ", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro interno do servidor ao alterar nome.").build();
         }
-
     }
 
     @PATCH
@@ -70,11 +69,10 @@ public class UsuarioLogadoResource {
         try {
             return Response.ok(getUsuarioService().alterarEmail(dto, idUsuario)).build();
         } catch (Exception e) {
-            LOG.error("Erro ao alterar o email", e);
+            LOG.error("Erro ao alterar o email: ", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro interno do servidor ao alterar email.").build();
         }
-
     }
 
     @PATCH
@@ -83,11 +81,10 @@ public class UsuarioLogadoResource {
         try {
             return Response.ok(getUsuarioService().alterarCpf(dto, idUsuario)).build();
         } catch (Exception e) {
-            LOG.error("Erro ao alterar o cpf", e);
+            LOG.error("Erro ao alterar o cpf: ", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro interno do servidor ao alterar cpf.").build();
         }
-
     }
 
     @PATCH
@@ -96,11 +93,10 @@ public class UsuarioLogadoResource {
         try {
             return Response.ok(getUsuarioService().alterarNascimento(dto, idUsuario)).build();
         } catch (Exception e) {
-            LOG.error("Erro ao alterar o nascimento", e);
+            LOG.error("Erro ao alterar o nascimento: ", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro interno do servidor ao alterar nascimento.").build();
         }
-
     }
 
     @PATCH
@@ -109,11 +105,10 @@ public class UsuarioLogadoResource {
         try {
             return Response.ok(clienteService.alterarTelefone(dto, idUsuario)).build();
         } catch (Exception e) {
-            LOG.error("Erro ao alterar o telefone", e);
+            LOG.error("Erro ao alterar o telefone: ", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro interno do servidor ao alterar telefone.").build();
         }
-
     }
 
     private UsuarioService getUsuarioService() {
