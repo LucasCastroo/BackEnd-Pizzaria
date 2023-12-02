@@ -4,6 +4,7 @@ import br.com.unitins.a1.dto.PizzaDTO;
 import br.com.unitins.a1.dto.PizzaResponseDTO;
 import br.com.unitins.a1.model.Pizza;
 import br.com.unitins.a1.model.TamanhoPizza;
+import br.com.unitins.a1.service.JwtService;
 import br.com.unitins.a1.service.PizzaServiceImpl;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -20,6 +21,9 @@ public class PizzaResourceTest {
 
     @Inject
     PizzaServiceImpl pizzaService;
+
+    @Inject
+    JwtService jwtService;
 
     @Test
     void createPizza() {
@@ -63,7 +67,7 @@ public class PizzaResourceTest {
         );
 
         PizzaResponseDTO pizzaTest = pizzaService.create(dto);
-        Long id = pizzaService.findById();
+        Long id = pizzaTest.getId();
 
         PizzaDTO dtoUpdate = new PizzaDTO(
                 "Pizza de Calabresa",
@@ -104,7 +108,7 @@ public class PizzaResourceTest {
                 25
         );
 
-        Pizza pizzaTest = itemService.createPizza(dto);
+        PizzaResponseDTO pizzaTest = pizzaService.create(dto);
 
         given()
                 .when()
