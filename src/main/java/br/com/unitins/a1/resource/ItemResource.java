@@ -33,6 +33,7 @@ public abstract class ItemResource<S extends ItemService, DTO extends ItemDTO> {
     @Path("/create/")
     @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response create(DTO dto) {
+        LOG.infof("Item %s cadastrado", dto.nome);
         return Response.status(Response.Status.CREATED).entity(service.create(dto)).build();
     }
 
@@ -40,6 +41,7 @@ public abstract class ItemResource<S extends ItemService, DTO extends ItemDTO> {
     @Path("/update/{id}")
     @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response update(DTO dto, @PathParam("id") Long id) {
+        LOG.infof("Item %s autualizado", dto.nome);
         return Response.status(Response.Status.ACCEPTED).entity(service.update(id, dto)).build();
     }
 
@@ -56,7 +58,6 @@ public abstract class ItemResource<S extends ItemService, DTO extends ItemDTO> {
     public Response download(@PathParam("nomeImagem") String nomeImagem) {
         ResponseBuilder response = Response.ok(fileService.obter(nomeImagem));
         response.header("Content-Disposition", "attachment;filename=" + nomeImagem);
-        LOG.info("Download de imagem de um item!");
         return response.build();
     }
 
@@ -66,6 +67,7 @@ public abstract class ItemResource<S extends ItemService, DTO extends ItemDTO> {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response salvarImagem(@MultipartForm ItemImageForm form, @PathParam("id") Long id) {
         String nomeImagem;
+        LOG.infof("Imagem do item %d autualizada", id);
         try {
             nomeImagem = fileService.salvar(form.getNomeImagem(), form.getImagem());
         } catch (IOException e) {

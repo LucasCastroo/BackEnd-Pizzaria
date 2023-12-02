@@ -24,7 +24,7 @@ public class CupomResource {
     @POST
     @RolesAllowed({NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response create(@Valid CupomDTO dto){
-        LOG.info("Novo cupom adicionado!");
+        LOG.infof("Novo cupom %s adicionado!", dto.codigo());
         return Response.status(Response.Status.CREATED).entity(service.create(dto)).build();
     }
 
@@ -33,7 +33,7 @@ public class CupomResource {
     @RolesAllowed({NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response update(CupomDTO dto, @PathParam("id") Long id){
         service.update(dto, id);
-        LOG.info("Cupom atualizado!");
+        LOG.infof("Cupom atualizado!");
         return Response.noContent().build();
     }
 
@@ -42,7 +42,7 @@ public class CupomResource {
     @RolesAllowed({NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response delete(@PathParam("id") Long id){
         service.delete(id);
-        LOG.info("Cupom deletado!");
+        LOG.infof("Cupom id=%d deletado!", id);
         return Response.noContent().build();
     }
 
@@ -50,7 +50,7 @@ public class CupomResource {
     @Path("/{id}")
     @RolesAllowed({NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findById(@PathParam("id") Long id){
-        LOG.info("Busca de cupom por ID!");
+        LOG.infof("Busca de cupom por %d!", id);
         return Response.ok().entity(service.findById(id)).build();
     }
 
@@ -60,7 +60,7 @@ public class CupomResource {
     public Response findByCodigo(@PathParam("codigo") String codigo){
         CupomResponseDTO cupom = service.findByCodigo(codigo);
         if(cupom != null) {
-            LOG.info("Busca de cupom por CODIGO!");
+            LOG.infof("Busca de cupom por %s!", codigo);
             return Response.ok().entity(cupom).build();
         } else
             return Response.status(404).build();

@@ -25,7 +25,7 @@ public class ClienteResource {
     @POST
     public Response insert(@Valid ClienteDTO dto) {
         ClienteResponseDTO retorno = service.insert(dto);
-        LOG.info("Novo cliente cadastrado!");
+        LOG.infof("Novo cliente id=%d cadastrado!", retorno.id());
         return Response.status(201).entity(retorno).build();
     }
 
@@ -34,7 +34,7 @@ public class ClienteResource {
     @RolesAllowed({Cliente.ROLE})
     public Response update(ClienteDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
-        LOG.info("Informações de cliente atualizadas!");
+        LOG.infof("Informações do cliente id=%d atualizadas!", id);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
@@ -43,14 +43,14 @@ public class ClienteResource {
     @RolesAllowed({Cliente.ROLE, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
-        LOG.info("Cliente deletado!");
+        LOG.infof("Cliente id=%d deletado!", id);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @GET
     @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findAll() {
-        LOG.info("Busca de todos os clientes!");
+        LOG.infof("Busca de todos os clientes");
         return Response.ok(service.findByAll()).build();
     }
 
@@ -58,7 +58,7 @@ public class ClienteResource {
     @Path("/search/id/{id}")
     @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findById(@PathParam("id") Long id) {
-        LOG.info("Busca de um cliente por ID!");
+        LOG.infof("Busca de um cliente id=%d", id);
         return Response.ok(service.findById(id)).build();
     }
 
@@ -66,7 +66,7 @@ public class ClienteResource {
     @Path("/search/nome/{nome}")
     @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findByNome(@PathParam("nome") String nome) {
-        LOG.info("Busca de um cliente por NOME!");
+        LOG.infof("Busca de um cliente por %s", nome);
         return Response.ok(service.findByNome(nome)).build();
     }
 }

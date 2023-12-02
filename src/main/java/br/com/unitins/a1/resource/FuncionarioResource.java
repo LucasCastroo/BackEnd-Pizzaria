@@ -29,7 +29,7 @@ public class FuncionarioResource {
     @RolesAllowed({NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response insert(@Valid FuncionarioDTO dto) {
         FuncionarioResponseDTO retorno = service.insert(dto);
-        LOG.info("Novo funcionario cadastrado!");
+        LOG.infof("Novo funcionario %s cadastrado!", dto.getNome());
         return Response.status(201).entity(retorno).build();
     }
 
@@ -39,7 +39,7 @@ public class FuncionarioResource {
     @Transactional
     public Response update(FuncionarioDTO dto, @PathParam("id") Long id) {
         service.update(dto, id);
-        LOG.info("Informações de funcionario atualizadas!");
+        LOG.infof("Informações de funcionario id=%d atualizadas!", id);
         return Response.status(Status.NO_CONTENT).build();
     }
 
@@ -48,7 +48,7 @@ public class FuncionarioResource {
     @RolesAllowed({Funcionario.ROLE, NivelAcesso.Role.GERENTE, NivelAcesso.Role.ADMIN})
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
-        LOG.info("Funcionario deletado!");
+        LOG.infof("Funcionario id=%d deletado!", id);
         return Response.status(Status.NO_CONTENT).build();
     }
 
@@ -56,7 +56,7 @@ public class FuncionarioResource {
     @Path("/search/id/{id}")
     @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findById(@PathParam("id") Long id) {
-        LOG.info("Busca de um funcionario por ID!");
+        LOG.infof("Busca de um funcionario por %d", id);
         return Response.ok(service.findById(id)).build();
     }
 
@@ -64,7 +64,7 @@ public class FuncionarioResource {
     @Path("/search/nome/{nome}")
     @RolesAllowed({NivelAcesso.Role.SUPERVISOR, NivelAcesso.Role.GERENTE,NivelAcesso.Role.ADMIN})
     public Response findByNome(@PathParam("nome") String nome) {
-        LOG.info("Busca de um cliente por NOME!");
+        LOG.infof("Busca de um funcionario por %s", nome);
         return Response.ok(service.findByNome(nome)).build();
     }
 }
