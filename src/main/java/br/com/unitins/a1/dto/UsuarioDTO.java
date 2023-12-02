@@ -1,6 +1,7 @@
 package br.com.unitins.a1.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.br.CPF;
@@ -20,7 +21,7 @@ public abstract class UsuarioDTO {
     @Size(min = 6, message = "Senha deve ter no mínimo 6 caracters!")
     private final String senha;
 
-    @NotBlank
+    @NotNull
     @Past
     private final LocalDate nascimento;
 

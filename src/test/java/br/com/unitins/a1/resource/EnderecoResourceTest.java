@@ -1,27 +1,27 @@
 package br.com.unitins.a1.resource;
 
-import br.com.unitins.a1.dto.*;
-import br.com.unitins.a1.model.Endereco;
-import br.com.unitins.a1.model.NivelAcesso;
+import br.com.unitins.a1.dto.ClienteDTO;
+import br.com.unitins.a1.dto.ClienteResponseDTO;
+import br.com.unitins.a1.dto.EnderecoDTO;
+import br.com.unitins.a1.dto.EnderecoResponseDTO;
 import br.com.unitins.a1.service.ClienteService;
 import br.com.unitins.a1.service.EnderecoService;
-import br.com.unitins.a1.service.FuncionarioService;
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
+@TestSecurity(authorizationEnabled = false)
 class EnderecoResourceTest {
 
     @Inject

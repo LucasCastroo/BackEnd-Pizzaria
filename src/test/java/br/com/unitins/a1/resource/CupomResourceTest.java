@@ -3,8 +3,8 @@ package br.com.unitins.a1.resource;
 import br.com.unitins.a1.dto.CupomDTO;
 import br.com.unitins.a1.dto.CupomResponseDTO;
 import br.com.unitins.a1.service.CupomService;
-import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -13,9 +13,10 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
+@TestSecurity(authorizationEnabled = false)
 class CupomResourceTest {
     @Inject
     CupomService service;

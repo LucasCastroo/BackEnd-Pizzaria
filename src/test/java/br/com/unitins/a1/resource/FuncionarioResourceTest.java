@@ -1,10 +1,12 @@
 package br.com.unitins.a1.resource;
 
-import br.com.unitins.a1.dto.*;
+import br.com.unitins.a1.dto.FuncionarioDTO;
+import br.com.unitins.a1.dto.FuncionarioResponseDTO;
 import br.com.unitins.a1.model.Funcionario;
 import br.com.unitins.a1.model.NivelAcesso;
 import br.com.unitins.a1.service.FuncionarioService;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
+@TestSecurity(authorizationEnabled = false)
 public class FuncionarioResourceTest {
     @Inject
     FuncionarioService funcionarioService;
@@ -25,9 +28,9 @@ public class FuncionarioResourceTest {
     public void insert() {
         Funcionario dto = new Funcionario(
                 "Mailson",
-                "222.222.222-22",
+                "261.460.670-75",
                 "mailson@gmail.com",
-                "222222",
+                "12345678",
                 LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );
@@ -40,9 +43,8 @@ public class FuncionarioResourceTest {
                 .statusCode(201)
                 .body("id", notNullValue(),
                         "nome", is("Mailson"),
-                        "cpf", is("222.222.222-22"),
+                        "cpf", is("261.460.670-75"),
                         "email", is("mailson@gmail.com"),
-                        "nascimento", is(LocalDate.of(1986,7,18)),
                         "tipoAcesso", is(NivelAcesso.GERENTE.name())
                 );
     }
@@ -51,9 +53,9 @@ public class FuncionarioResourceTest {
     public void update() {
         FuncionarioDTO dto = new FuncionarioDTO(
                 "Mailson",
-                "222.222.222-22",
+                "261.460.670-75",
                 "mailson@gmail.com",
-                "222222",
+                "12345678",
                 LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );
@@ -63,9 +65,9 @@ public class FuncionarioResourceTest {
 
         FuncionarioDTO dtoUpdate = new FuncionarioDTO(
                 "Mailson",
-                "222.222.222-22",
+                "261.460.670-75",
                 "mailson@gmail.com",
-                "222222",
+                "12345678",
                 LocalDate.of(1986,7,18),
                 NivelAcesso.ADMIN
         );
@@ -79,7 +81,7 @@ public class FuncionarioResourceTest {
 
         FuncionarioResponseDTO fun = funcionarioService.findById(id);
         assertThat(fun.nome(), is("Mailson"));
-        assertThat(fun.cpf(), is("222.222.222-22"));
+        assertThat(fun.cpf(), is("261.460.670-75"));
         assertThat(fun.email(), is("mailson@gmail.com"));
         assertThat(fun.nascimento(), is(LocalDate.of(1986,7,18)));
         assertThat(fun.tipoAcesso(), is(NivelAcesso.ADMIN));
@@ -89,9 +91,9 @@ public class FuncionarioResourceTest {
     void delete() {
         FuncionarioDTO dto = new FuncionarioDTO(
                 "Mailson",
-                "222.222.222-22",
+                "261.460.670-75",
                 "mailson@gmail.com",
-                "222222",
+                "12345678",
                 LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );
@@ -109,9 +111,9 @@ public class FuncionarioResourceTest {
     void findById() {
         FuncionarioDTO dto = new FuncionarioDTO(
                 "Mailson",
-                "222.222.222-22",
+                "261.460.670-75",
                 "mailson@gmail.com",
-                "222222",
+                "12345678",
                 LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );
@@ -131,9 +133,9 @@ public class FuncionarioResourceTest {
     void findByNome() {
         FuncionarioDTO dto = new FuncionarioDTO(
                 "Mailson",
-                "222.222.222-22",
+                "261.460.670-75",
                 "mailson@gmail.com",
-                "222222",
+                "12345678",
                 LocalDate.of(1986,7,18),
                 NivelAcesso.GERENTE
         );

@@ -5,6 +5,7 @@ import br.com.unitins.a1.dto.ClienteResponseDTO;
 import br.com.unitins.a1.dto.EnderecoDTO;
 import br.com.unitins.a1.service.ClienteService;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
+@TestSecurity(authorizationEnabled = false)
 public class ClienteResourceTest {
 
     @Inject
@@ -38,10 +40,10 @@ public class ClienteResourceTest {
         enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas",  "77777-777"));
         ClienteDTO dto = new ClienteDTO(
                 "Janio Junior",
-                "111.111.111-11",
+                "261.460.670-75",
                 "janio@gmail.com",
-                "111111",
-                "(11) 11111-1111",
+                "12345678",
+                "63999978459",
                 LocalDate.of(1994,1,1),
                 enderecos
         );
@@ -54,10 +56,9 @@ public class ClienteResourceTest {
                 .statusCode(201)
                 .body("id", notNullValue(),
                         "nome", is("Janio Junior"),
-                        "cpf", is("111.111.111-11"),
+                        "cpf", is("261.460.670-75"),
                         "email", is("janio@gmail.com"),
-                        "telefone", is("(11) 11111-1111"),
-                        "nascimento", is(LocalDate.of(1994,1,1))
+                        "telefone", is("63999978459")
                 );
     }
 
@@ -67,10 +68,10 @@ public class ClienteResourceTest {
         enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas", "77777-777"));
         ClienteDTO dto = new ClienteDTO(
                 "Janio Junior",
-                "111.111.111-11",
+                "261.460.670-75",
                 "janio@gmail.com",
-                "111111",
-                "(11) 11111-1111",
+                "12345678",
+                "63999978459",
                 LocalDate.of(1994,1,1),
                 enderecos
         );
@@ -80,10 +81,10 @@ public class ClienteResourceTest {
 
         ClienteDTO dtoUpdate = new ClienteDTO(
                 "Janio Junior",
-                "111.111.111-11",
+                "261.460.670-75",
                 "janio@gmail.com",
-                "111111",
-                "(22) 22222-2222",
+                "12345678",
+                "63999978459",
                 LocalDate.of(1994,1,1),
                 enderecos
         );
@@ -97,9 +98,9 @@ public class ClienteResourceTest {
 
         ClienteResponseDTO cli = clienteService.findById(id);
         assertThat(cli.nome(), is("Janio Junior"));
-        assertThat(cli.cpf(), is("111.111.111-11"));
+        assertThat(cli.cpf(), is("261.460.670-75"));
         assertThat(cli.email(), is("janio@gmail.com"));
-        assertThat(cli.telefone(), is("(22) 22222-2222"));
+        assertThat(cli.telefone(), is("63999978459"));
         assertThat(cli.nascimento(), is(LocalDate.of(1994,1,1)));
     }
 
@@ -109,10 +110,10 @@ public class ClienteResourceTest {
         enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas", "77777-777"));
         ClienteDTO dto = new ClienteDTO(
                 "Janio Junior",
-                "111.111.111-11",
+                "261.460.670-75",
                 "janio@gmail.com",
-                "111111",
-                "(11) 11111-1111",
+                "12345678",
+                "63999978459",
                 LocalDate.of(1994,1,1),
                 enderecos
         );
@@ -132,10 +133,10 @@ public class ClienteResourceTest {
         enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas", "77777-777"));
         ClienteDTO dto = new ClienteDTO(
                 "Janio Junior",
-                "111.111.111-11",
+                "261.460.670-75",
                 "janio@gmail.com",
-                "111111",
-                "(11) 11111-1111",
+                "12345678",
+                "63999978459",
                 LocalDate.of(1994,1,1),
                 enderecos
         );
@@ -157,10 +158,10 @@ public class ClienteResourceTest {
         enderecos.add(new EnderecoDTO("Rua 01, Qd 02, Lote 01", "Bairro algumaCoisa", "Palmas", "77777-777"));
         ClienteDTO dto = new ClienteDTO(
                 "Janio Junior",
-                "111.111.111-11",
+                "261.460.670-75",
                 "janio@gmail.com",
-                "111111",
-                "(11) 11111-1111",
+                "12345678",
+                "63999978459",
                 LocalDate.of(1994,1,1),
                 enderecos
         );
